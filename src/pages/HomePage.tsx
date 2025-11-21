@@ -170,7 +170,7 @@ const bestSellers = products.filter(p => p.bestSeller);
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 drop-shadow-2xl leading-tight animate-slide-up">
             {t('home.heroTitle')}
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 drop-shadow-lg mt-2">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-500 to-rose-500 drop-shadow-lg mt-2">
               {t('home.heroSubtitle')}
             </span>
           </h1>
@@ -182,7 +182,7 @@ const bestSellers = products.filter(p => p.bestSeller);
           <div className="flex flex-wrap gap-5 justify-center mb-12">
             <Link
               to="/shop"
-              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-pink-600 to-rose-600 text-white px-10 py-4 rounded-full font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-600 to-rose-600 text-white px-10 py-4 rounded-full font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
               <ShoppingBag className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               {t('common.buyNow')}
             </Link>

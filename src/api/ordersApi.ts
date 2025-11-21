@@ -10,6 +10,7 @@ export interface CreateOrderDTO {
     product: string;   // product._id
     quantity: number;
     size: CartItem["size"];
+    color?: string;
   }[];
   customerDetails: OrderDetails;
   total: number;

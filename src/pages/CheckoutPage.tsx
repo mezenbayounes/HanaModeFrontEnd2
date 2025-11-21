@@ -16,7 +16,8 @@ export default function CheckoutPage() {
     firstName: '',
     lastName: '',
     address: '',
-    phone: ''
+    phone: '',
+    email: '',
   });
   const [errors, setErrors] = useState<Partial<OrderDetails>>({});
 
@@ -29,6 +30,7 @@ export default function CheckoutPage() {
 
   const validate = (): boolean => {
     const newErrors: Partial<OrderDetails> = {};
+
 
     if (!formData.firstName.trim()) {
       newErrors.firstName = t('checkout.firstNameRequired');
@@ -43,6 +45,11 @@ export default function CheckoutPage() {
       newErrors.phone = t('checkout.phoneRequired');
     } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
       newErrors.phone = t('checkout.phoneInvalid');
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = t('checkout.emailRequired') || 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = t('checkout.emailInvalid') || 'Invalid email address';
     }
 
     setErrors(newErrors);
@@ -159,6 +166,25 @@ export default function CheckoutPage() {
                     <p className="mt-1 text-sm text-red-500">{errors.lastName}</p>
                   )}
                 </div>
+              </div>
+
+
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t('checkout.email')} *
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange('email')}
+                  className={`w-full px-4 py-3 rounded-xl border ${
+                    errors.email ? 'border-red-300' : 'border-gray-300'
+                  } focus:ring-2 focus:ring-rose-500 focus:border-transparent`}
+                  placeholder={t('checkout.enterEmail') || 'Enter your email'}
+                />
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                )}
               </div>
 
               <div className="mb-6">
