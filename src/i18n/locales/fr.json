@@ -12,7 +12,10 @@
     "buyNow": "Acheter Maintenant",
     "exploreStyles": "Explorer les Styles",
     "newCollection": "Nouvelle Collection",
-    "allRightsReserved": "Tous droits réservés"
+    "allRightsReserved": "Tous droits réservés",
+    "search": "Rechercher",
+    "from": "Du",
+    "to": "Au"
   },
   "home": {
     "heroTitle": "Découvrez Votre Style",
@@ -91,6 +94,8 @@
     }
   },
   "product": {
+    "size": "Taille",
+    "color": "Couleur",
     "sizes": "Tailles",
     "colors": "Couleurs",
     "addToCart": "Ajouter au panier",
@@ -380,6 +385,23 @@
     "item": "article",
     "items": "articles",
     "startAddingFavorites": "Commencez à ajouter des produits à vos favoris pour les voir ici !"
-
+  },
+  "orders": {
+    "adminTitle": "Toutes les Commandes",
+    "manageDescription": "Gérer et suivre toutes les commandes clients",
+    "total": "Total Commandes",
+    "status_pending": "En attente",
+    "status_processing": "En cours",
+    "status_shipped": "Expédiée",
+    "status_delivered": "Livrée",
+    "status_cancelled": "Annulée",
+    "revenue": "Revenu",
+    "noOrders": "Aucune commande trouvée.",
+    "orderId": "ID de Commande",
+    "status": "Statut",
+    "customer": "Informations Client",
+    "address": "Adresse de Livraison",
+    "products": "Articles Commandés",
+    "orderDate": "Date de Commande"
   }
 }

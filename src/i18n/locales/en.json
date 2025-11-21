@@ -12,7 +12,10 @@
     "buyNow": "Buy Now",
     "exploreStyles": "Explore Styles",
     "newCollection": "New Collection",
-    "allRightsReserved": "All Rights Reserved"
+    "allRightsReserved": "All Rights Reserved",
+    "search": "Search",
+    "from": "From",
+    "to": "To"
   },
   "home": {
     "heroTitle": "Discover Your Style",
@@ -91,6 +94,8 @@
     }
   },
   "product": {
+    "size": "Size",
+    "color": "Color",
     "sizes": "Sizes",
     "colors": "Colors",
     "addToCart": "Add to Cart",
@@ -263,7 +268,6 @@
     "errorLoad": "Failed to load categories",
     "errorSave": "Failed to save category",
     "errorDelete": "Failed to delete category"
-   
   },
   "alerte": {
     "delete": "Are you sure you want to delete this category?"
@@ -364,8 +368,7 @@
     "newPassword": "New Password",
     "confirmNewPassword": "Confirm New Password",
     "resetPasswordSuccess": "Password reset successful. You can now log in.",
-     "addNewAdmin": "Add New Admin"
-    
+    "addNewAdmin": "Add New Admin"
   },
   "favorites": {
     "title": "My Favorites",
@@ -378,6 +381,23 @@
     "item": "item",
     "items": "items",
     "startAddingFavorites": "Start adding products to your favorites to see them here!"
-
+  },
+  "orders": {
+    "adminTitle": "All Orders",
+    "manageDescription": "Manage and track all customer orders",
+    "total": "Total Orders",
+    "status_pending": "Pending",
+    "status_processing": "Processing",
+    "status_shipped": "Shipped",
+    "status_delivered": "Delivered",
+    "status_cancelled": "Cancelled",
+    "revenue": "Revenue",
+    "noOrders": "No orders found.",
+    "orderId": "Order ID",
+    "status": "Status",
+    "customer": "Customer Information",
+    "address": "Shipping Address",
+    "products": "Order Items",
+    "orderDate": "Order Date"
   }
 }

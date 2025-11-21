@@ -77,7 +77,8 @@ export default function CheckoutPage() {
         product: item.product._id,
         quantity: item.quantity,
         size: item.size,
-        color:item.color
+        colorName: item.color, // Send color name
+        colorCode: item.colorCode // Send color hex code
       })),
       customerDetails: formData,
       total,
