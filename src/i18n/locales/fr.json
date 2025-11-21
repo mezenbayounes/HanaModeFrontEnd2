@@ -357,8 +357,17 @@
     "confirmEmail": "Confirmer l'email",
     "emailsDoNotMatch": "Les emails ne correspondent pas",
     "enterAddress": "Entrez votre adresse",
-    "LoginToYourAccount": "Connectez-vous à votre compte"
-
+    "LoginToYourAccount": "Connectez-vous à votre compte",
+    "forgotPassword": "Mot de passe oublié ?",
+    "forgotPasswordTitle": "Mot de passe oublié",
+    "forgotPasswordDesc": "Entrez votre email pour recevoir un code de réinitialisation.",
+    "otpSent": "Code OTP envoyé à votre email. Veuillez vérifier votre boîte de réception.",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "otp": "Code OTP",
+    "newPassword": "Nouveau mot de passe",
+    "confirmNewPassword": "Confirmer le nouveau mot de passe",
+    "resetPasswordSuccess": "Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.",
+    "addNewAdmin": "Ajouter un nouvel administrateur"
   },
   "favorites": {
     "title": "Mes Favoris",

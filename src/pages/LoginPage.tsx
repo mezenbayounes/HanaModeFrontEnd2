@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import bgadminHero from '../assets/bgadmin.png';
+import { Link } from 'react-router-dom';
 import hanaLogo from '../assets/hanaModeLogo.png';
 import { API_URL } from '../config';
 
@@ -110,7 +111,13 @@ export default function LoginPage() {
               {t('auth.signIn')}
             </button>
 
+
           </form>
+          <div className="text-center mt-4">
+            <Link to="/add-admin" className="text-sm text-brown-700 hover:underline">
+             {t('auth.addNewAdmin')}
+            </Link>
+          </div>
 
         </div>
       </div>

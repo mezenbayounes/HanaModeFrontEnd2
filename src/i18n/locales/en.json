@@ -263,6 +263,7 @@
     "errorLoad": "Failed to load categories",
     "errorSave": "Failed to save category",
     "errorDelete": "Failed to delete category"
+   
   },
   "alerte": {
     "delete": "Are you sure you want to delete this category?"
@@ -353,7 +354,17 @@
     "confirmEmail": "Confirm Email",
     "emailsDoNotMatch": "Emails do not match",
     "enterAddress": "Enter your address",
-    "LoginToYourAccount": "Login to your account"
+    "LoginToYourAccount": "Login to your account",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordDesc": "Enter your email to receive a reset code.",
+    "otpSent": "OTP sent to your email. Please check your inbox.",
+    "resetPassword": "Reset Password",
+    "otp": "OTP",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "resetPasswordSuccess": "Password reset successful. You can now log in.",
+     "addNewAdmin": "Add New Admin"
     
   },
   "favorites": {

@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutGrid, PlusCircle, Package, LogOut } from 'lucide-react';
+import { LayoutGrid, PlusCircle, Package, LogOut, UserPlus, ListOrdered } from 'lucide-react';
 import React from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '../context/AuthContext';
@@ -22,7 +22,8 @@ export default function AdminNavbar() {
     { path: '/add-category', label: t('admin.manageCategories'), icon: LayoutGrid },
     { path: '/admin/products', label: t('adminProduct.title'), icon: Package },
     { path: '/admin/products/add', label: t('adminProduct.addProduct'), icon: PlusCircle },
-    
+    { path: '/admin/orders', label: t('orders.adminTitle', 'Orders'), icon: ListOrdered },
+    { path: '/add-admin', label: t('admin.addAdminTitle', 'Add Admin'), icon: UserPlus },
   ];
 
   return (

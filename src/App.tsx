@@ -20,7 +20,11 @@ import ProductDetailsAdminPage from './pages/ProductDetailsAdminPage';
 import LoginPage from './pages/LoginPage';
 import UserLoginPage from './pages/UserLoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import FavoritesPage from './pages/FavoritesPage';
+import AddAdminPage from './pages/AddAdminPage';
+import AdminOrdersPage from './pages/AdminOrdersPage';
 import { AuthProvider } from './context/AuthContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -29,10 +33,12 @@ function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname === '/add-category';
   const isAuthRoute = location.pathname === '/login-admin-console' || location.pathname === '/user-login' || location.pathname === '/register';
+  const isPasswordRoute = location.pathname === '/forgot-password' || location.pathname === '/reset-password';
+  const isAddAdminRoute = location.pathname === '/add-admin';
 
   return (
     <div className="flex flex-col min-h-screen">
-      {!isAdminRoute && !isAuthRoute && <Header />}
+      {!isAdminRoute && !isAuthRoute && !isPasswordRoute && !isAddAdminRoute && <Header />}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -50,18 +56,22 @@ function AppContent() {
           <Route path="/user-login" element={<UserLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
           
           {/* Admin Routes */}
+          <Route path="/add-admin" element={<AddAdminPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/add-category" element={<AddCategoryPage />} />
             <Route path="/admin/products" element={<ManageProductsPage />} />
             <Route path="/admin/products/add" element={<AddProductPage />} />
             <Route path="/admin/products/edit/:id" element={<EditProductPage />} />
             <Route path="/admin/product/:id" element={<ProductDetailsAdminPage />} />
+            <Route path="/admin/orders" element={<AdminOrdersPage />} />
           </Route>
         </Routes>
       </main>
-      {!isAdminRoute && !isAuthRoute && <Footer />}
+      {!isAdminRoute && !isAuthRoute && !isPasswordRoute && !isAddAdminRoute && <Footer />}
     </div>
   );
 }

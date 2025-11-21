@@ -132,6 +132,11 @@ export default function UserLoginPage() {
                   </Link>
                 </span>
               </div>
+              <div>
+                <Link to="/forgot-password" className="text-sm text-brown-700 hover:underline">
+                  {t('auth.forgotPassword')}
+                </Link>
+              </div>
               
             </div>
           </form>
