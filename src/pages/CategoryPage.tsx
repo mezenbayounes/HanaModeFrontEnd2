@@ -241,7 +241,7 @@ export default function CategoryPage() {
         />
 
         {processedProducts.length > 0 ? (
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7' : 'space-y-6'}>
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 justify-items-center' : 'space-y-6'}>
             {processedProducts.map(product =>
               viewMode === 'grid' ? (
                 <ProductCard key={product._id} product={product} />

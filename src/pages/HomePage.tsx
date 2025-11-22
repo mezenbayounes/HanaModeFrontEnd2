@@ -182,14 +182,14 @@ const bestSellers = products.filter(p => p.bestSeller);
           <div className="flex flex-wrap gap-5 justify-center mb-12">
             <Link
               to="/shop"
-              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-600 to-rose-600 text-white px-10 py-4 rounded-full font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-600 to-rose-600 text-white px-10 py-4  font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
               <ShoppingBag className="w-5 h-5 group-hover:rotate-12 transition-transform" />
               {t('common.buyNow')}
             </Link>
 
             <Link
               to="/categories"
-              className="group inline-flex items-center gap-3 bg-white/95 backdrop-blur-md text-gray-900 px-10 py-4 rounded-full font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl border-2 border-white/50 hover:bg-white">
+              className="group inline-flex items-center gap-3 bg-white/95 backdrop-blur-md text-gray-900 px-10 py-4  font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl border-2 border-white/50 hover:bg-white">
               {t('common.exploreStyles')}
             </Link>
           </div>
@@ -292,7 +292,7 @@ const bestSellers = products.filter(p => p.bestSeller);
               </h2>
             </div>
 
-            {/* Small Red Separator */}
+            {/* Small gray Separator */}
       <div className="w-20 h-1.5 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-full mb-4 shadow-md"></div>
 
             {/* Description */}

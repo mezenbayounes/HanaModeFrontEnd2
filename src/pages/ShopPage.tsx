@@ -88,9 +88,9 @@ const filteredCategories = categoryOptions
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-hana px-4">
       {/* Header */}
       <div className="text-center py-6">
-        <ShoppingBag className="mx-auto w-10 h-10 text-rose-500" />
+        <ShoppingBag className="mx-auto w-10 h-10 text-gray-700 to gray-900" />
         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">{t('shop.ourProducts')}</h2>
-        <div className="w-16 h-1 bg-red-600 rounded-full mx-auto mb-2"></div>
+        <div className="w-16 h-1 bg-gray-700 to gray-900 rounded-full mx-auto mb-2"></div>
         <p className="text-gray-500 text-sm md:text-base">
           {t('shop.discoverCollection')} {products.length} {t('shop.styles')}
         </p>
@@ -120,7 +120,7 @@ const filteredCategories = categoryOptions
 
          {/* Products Grid */}
 {filteredProducts.length > 0 ? (
-  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10 justify-items-center">
+  <div className="grid grid-cols-1 min-[678px]:grid-cols-2 min-[1319px]:grid-cols-3 gap-6 md:gap-10 justify-items-center">
     {filteredProducts.map((product) => (
       <ProductCard key={product._id} product={product} />
     ))}

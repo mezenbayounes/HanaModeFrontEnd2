@@ -21,8 +21,8 @@ export default function Footer() {
                               />
                            
                            <span className="text-2xl font-serif italic tracking-wider">
-                  <span className="text-white">Hana</span>{' '}
-                  <span className="text-red-600">Mode</span>
+                  <span className="text-white">Hana</span>
+                  <span className="text-red-600">Mori</span>
                 </span>
             </Link>
             <p className="text-gray-400 text-sm">
@@ -144,7 +144,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 pt-8">
           <p className="text-center text-gray-400 text-sm">
-            © {new Date().getFullYear()} Hana Mode. {t('common.allRightsReserved')}.
+            © {new Date().getFullYear()} HanaMori. {t('common.allRightsReserved')}.
           </p>
         </div>
       </div>

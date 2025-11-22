@@ -203,6 +203,7 @@
     "orderDate": "Order Date",
     "customerInfo": "Customer Information",
     "name": "Name",
+    "email": "Email",
     "phone": "Phone",
     "deliveryAddress": "Delivery Address",
     "orderItems": "Ordered Items",

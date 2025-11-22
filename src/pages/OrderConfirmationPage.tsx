@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, Home, ShoppingBag, Package, MapPin, Phone, User } from 'lucide-react';
+import { CheckCircle, Home, ShoppingBag, Package, MapPin, Phone, User, Mail } from 'lucide-react';
 import { Order } from '../types/Product';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
@@ -78,13 +78,20 @@ export default function OrderConfirmationPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-gray-400 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-gray-500">{t('orderConfirmation.email')}</p>
+                    <p className="font-semibold text-gray-900">{order.customerDetails.email}</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500">{t('orderConfirmation.phone')}</p>
                     <p className="font-semibold text-gray-900">{order.customerDetails.phone}</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 md:col-span-2">
+                <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                   <div>
                     <p className="text-sm text-gray-500">{t('orderConfirmation.deliveryAddress')}</p>
