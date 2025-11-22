@@ -28,6 +28,7 @@ export type Product = {
     color?: ProductColor[];
     featured?: boolean;
     bestSeller?: boolean;
+    isHidden?: boolean;
     createdAt?: string;
     updatedAt?: string;
 };
@@ -78,7 +79,15 @@ const buildFormData = (payload: ProductPayload) => {
 };
 
 export const getProducts = async () => {
-    const res = await axios.get(API_URL);
+    const token = localStorage.getItem('token');
+    const headers: any = {};
+
+    // Include auth token if user is logged in (admin)
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    const res = await axios.get(API_URL, { headers });
     return res.data;
 };
 
@@ -105,5 +114,10 @@ export const updateProduct = async (id: string, payload: ProductPayload) => {
 
 export const deleteProduct = async (id: string) => {
     const res = await axios.delete(`${API_URL}/${id}`);
+    return res.data;
+};
+
+export const toggleProductVisibility = async (id: string) => {
+    const res = await axios.patch(`${API_URL}/${id}/toggle-visibility`);
     return res.data;
 };

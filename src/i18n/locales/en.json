@@ -194,9 +194,10 @@
     "color": "Color",
     "orderError": "An error occurred while placing your order.",
     "email": "Email",
-  "enterEmail": "Enter your email",
-  "emailRequired": "Email is required",
-  "emailInvalid": "Invalid email address"
+    "enterEmail": "Enter your email",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email address",
+    "processing": "Processing..."
   },
   "orderConfirmation": {
     "orderSummary": "Order Summary",
@@ -327,6 +328,7 @@
     "selectFromProductColors": "Select from product colors:",
     "addColorsFirstWarning": "⚠️ Add product colors first to quickly select them for this size",
     "addCustomColorManually": "Add custom color manually",
+    "searchProduct": "Search for products...",
     "colors": {
       "black": "Black",
       "white": "White",
@@ -338,7 +340,12 @@
       "gray": "Gray",
       "pink": "Pink",
       "brown": "Brown"
-    }
+    },
+    "hidden": "Hidden",
+    "errorToggleVisibility": "Failed to toggle product visibility",
+    "errorDeleteInOrders": "Cannot delete product. It is used in one or more orders.",
+    "hideProduct": "Hide Product",
+    "showProduct": "Show Product"
   },
   "auth": {
     "login": "Login",

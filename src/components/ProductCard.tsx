@@ -15,8 +15,8 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
 
-  const hasDiscount = product.discountPrice && product.discountPrice < product.price;
-  const displayPrice = hasDiscount ? product.discountPrice! : product.price;
+  const hasDiscount = !!product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price;
+  const displayPrice = (product.discountPrice && product.discountPrice > 0) ? product.discountPrice : product.price;
   const discountPercent = hasDiscount
     ? Math.round(((product.price - product.discountPrice!) / product.price) * 100)
     : 0;

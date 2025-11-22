@@ -22,6 +22,7 @@ export default function CheckoutPage() {
     email: '',
   });
   const [errors, setErrors] = useState<Partial<OrderDetails>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const total = getTotal();
 
@@ -61,7 +62,12 @@ export default function CheckoutPage() {
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
+  // Prevent double submission
+  if (isSubmitting) return;
+
   if (!validate()) return;
+
+  setIsSubmitting(true); // Disable button
 
   try {
     const order = {
@@ -101,6 +107,7 @@ export default function CheckoutPage() {
   } catch (error) {
     console.error("Order creation failed:", error);
     alert(t('checkout.orderError'));
+    setIsSubmitting(false); // Re-enable button on error
   }
 };
 
@@ -228,10 +235,15 @@ export default function CheckoutPage() {
 
               <button
                 type="submit"
-                className="w-full bg-white text-black border-2 border-gray-600 py-4 font-bold text-lg hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className={`w-full py-4 font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 border-2 ${
+                  isSubmitting
+                    ? 'bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed'
+                    : 'bg-white text-black border-gray-600 hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105'
+                }`}
               >
                 <CheckCircle className="w-6 h-6" />
-                {t('checkout.placeOrder')}
+                {isSubmitting ? t('checkout.processing', 'Processing...') : t('checkout.placeOrder')}
               </button>
             </form>
           </div>

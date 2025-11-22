@@ -13,6 +13,9 @@ export default function ProductListItem({ product, actions, onClick }: ProductLi
   const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
 
+  const hasDiscount = !!product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price;
+  const displayPrice = (product.discountPrice && product.discountPrice > 0) ? product.discountPrice : product.price;
+
   return (
     <div
       className="bg-white rounded-3xl shadow-sm p-6 flex flex-col md:flex-row gap-6 hover:shadow-lg transition-shadow"
@@ -103,9 +106,9 @@ export default function ProductListItem({ product, actions, onClick }: ProductLi
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
           <div className="flex items-baseline gap-3">
             <span className="text-3xl font-bold text-gray-900">
-              {(product.discountPrice ?? product.price).toFixed(2)} DNT
+              {displayPrice.toFixed(2)} DNT
             </span>
-            {product.discountPrice && (
+            {hasDiscount && (
               <span className="text-lg text-gray-400 line-through">
                 {product.price.toFixed(2)} DNT
               </span>

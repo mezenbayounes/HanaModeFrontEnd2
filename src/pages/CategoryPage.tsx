@@ -74,6 +74,7 @@ export default function CategoryPage() {
       result = result.filter(
         product =>
           typeof product.discountPrice === 'number' &&
+          product.discountPrice > 0 &&
           product.discountPrice < product.price
       );
     }
@@ -193,11 +194,15 @@ export default function CategoryPage() {
             </p>
           </div>
 
+
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            
             <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.stylesAvailable')}</p>
               <p className="text-2xl font-bold">{products.length}</p>
             </div>
+            
             <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.inStock')}</p>
               <p className="text-2xl font-bold">
@@ -207,7 +212,7 @@ export default function CategoryPage() {
             <div className="bg-white/15 backdrop-blur  px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.bestDeals',)}</p>
               <p className="text-2xl font-bold">
-                {products.filter(product => product.discountPrice && product.discountPrice < product.price).length}
+                {products.filter(product => product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price).length}
               </p>
             </div>
             <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Edit2, Trash2, Search, AlertCircle, CheckCircle, LayoutGrid, List } from 'lucide-react';
-import { getProducts, deleteProduct, Product } from '../api/ProductApi';
+import { Plus, Edit2, Trash2, Search, AlertCircle, CheckCircle, LayoutGrid, List, Eye, EyeOff, X } from 'lucide-react';
+import { getProducts, deleteProduct, Product, toggleProductVisibility } from '../api/ProductApi';
 import AdminNavbar from '../components/AdminNavbar';
 import ProductListItem from '../components/ProductListItem';
 import { API_URL } from '../config';
@@ -14,6 +14,7 @@ export default function ManageProductsPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [errorPopup, setErrorPopup] = useState<string | null>(null);
 
   const [success, setSuccess] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -41,9 +42,32 @@ export default function ManageProductsPage() {
         setSuccess(t('adminProduct.successDeleted'));
         fetchProducts();
         setTimeout(() => setSuccess(null), 3000);
-      } catch (err) {
-        setError(t('adminProduct.errorDelete'));
+      } catch (err: any) {
+        // Check if it's the specific error about product in orders
+        const errorCode = err?.response?.data?.error;
+        
+        if (errorCode === 'PRODUCT_IN_ORDERS') {
+          // Show translated message in popup
+          setErrorPopup(t('adminProduct.errorDeleteInOrders'));
+        } else {
+          // Show generic error in banner
+          const errorMessage = err?.response?.data?.message || t('adminProduct.errorDelete');
+          setError(errorMessage);
+          setTimeout(() => setError(null), 5000);
+        }
       }
+    }
+  };
+
+  const handleToggleVisibility = async (id: string) => {
+    try {
+      const result = await toggleProductVisibility(id);
+      setSuccess(result.message);
+      fetchProducts();
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (err) {
+      setError(t('adminProduct.errorToggleVisibility'));
+      setTimeout(() => setError(null), 3000);
     }
   };
 
@@ -184,7 +208,12 @@ export default function ManageProductsPage() {
                           Out of Stock
                         </div>
                       )}
-                      {product.discountPrice && product.discountPrice < product.price && (
+                      {product.isHidden && (
+                        <div className="absolute bottom-2 right-2 px-3 py-1 bg-gray-800/90 backdrop-blur-sm text-white text-xs font-bold ">
+                          {t('adminProduct.hidden')}
+                        </div>
+                      )}
+                      {product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price && (
                         <div className="absolute top-2 left-2 px-3 py-1 bg-red-500 text-white text-xs font-bold ">
                           -{Math.round(((product.price - product.discountPrice) / product.price) * 100)}%
                         </div>
@@ -225,17 +254,27 @@ export default function ManageProductsPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => navigate(`/admin/products/edit/${product._id}`)}
-                          className="flex items-center gap-2 px-6 py-3  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
                         >
                           <Edit2 className="w-4 h-4" />
                           {t('admin.edit')}
                         </button>
                         <button
+                          onClick={() => handleToggleVisibility(product._id)}
+                          className={`flex items-center gap-2 px-4 py-2  font-semibold transition-colors ${
+                            product.isHidden 
+                              ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                              : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                          }`}
+                          title={product.isHidden ? t('adminProduct.showProduct') : t('adminProduct.hideProduct')}
+                        >
+                          {product.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        </button>
+                        <button
                           onClick={() => handleDelete(product._id)}
-                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
+                          className="flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
-                          {t('admin.delete')}
                         </button>
                       </div>
                     </div>
@@ -252,7 +291,7 @@ export default function ManageProductsPage() {
                             e.stopPropagation();
                             navigate(`/admin/products/edit/${product._id}`);
                           }}
-                          className="flex items-center gap-2 px-6 py-3  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
+                          className="flex items-center gap-2 px-4 py-2  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
                         >
                           <Edit2 className="w-4 h-4" />
                           {t('admin.edit')}
@@ -260,12 +299,25 @@ export default function ManageProductsPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
+                            handleToggleVisibility(product._id);
+                          }}
+                          className={`flex items-center gap-2 px-4 py-2  font-semibold transition-colors ${
+                            product.isHidden 
+                              ? 'bg-green-100 text-green-700 hover:bg-green-200' 
+                              : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                          }`}
+                          title={product.isHidden ? t('adminProduct.showProduct') : t('adminProduct.hideProduct')}
+                        >
+                          {product.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
                             handleDelete(product._id);
                           }}
-                          className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
+                          className="flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
-                          {t('admin.delete')}
                         </button>
                       </>
                     }
@@ -276,6 +328,43 @@ export default function ManageProductsPage() {
           )}
         </div>
       </div>
+
+      {/* Error Popup Modal */}
+      {errorPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-lg shadow-2xl max-w-md w-full animate-in fade-in zoom-in duration-200">
+            <div className="flex items-start justify-between p-6 border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 text-red-600" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {t('common.error')}
+                </h3>
+              </div>
+              <button
+                onClick={() => setErrorPopup(null)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-700 leading-relaxed">
+                {errorPopup}
+              </p>
+            </div>
+            <div className="flex justify-end gap-3 p-6 border-t border-gray-200 bg-gray-50">
+              <button
+                onClick={() => setErrorPopup(null)}
+                className="px-6 py-2.5 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gray-900 transition-colors"
+              >
+                {t('admin.cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
