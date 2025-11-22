@@ -16,9 +16,14 @@ export interface CreateOrderDTO {
   total: number;
 }
 
-export const createOrder = async (orderData: CreateOrderDTO) => {
-  const res = await axios.post(API_URL, orderData, {
-    headers: { "Content-Type": "application/json" },
-  });
+export const createOrder = async (orderData: CreateOrderDTO, token?: string) => {
+  const headers: any = { "Content-Type": "application/json" };
+
+  // Include auth token if user is logged in
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const res = await axios.post(API_URL, orderData, { headers });
   return res.data;
 };

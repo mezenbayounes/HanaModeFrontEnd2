@@ -7,11 +7,13 @@ import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { createOrder } from "../api/ordersApi"; 
 import { API_URL } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { items, getTotal, clearCart } = useCartStore();
+  const { token } = useAuth(); // Get auth token
   const [formData, setFormData] = useState<OrderDetails>({
     firstName: '',
     lastName: '',
@@ -84,7 +86,7 @@ export default function CheckoutPage() {
       total,
     };
 
-    const savedOrder = await createOrder(orderData);
+    const savedOrder = await createOrder(orderData, token || undefined);
 
     // ✨ FIX: navigate AFTER render cycle
     setTimeout(() => {

@@ -124,6 +124,16 @@ export default function Header() {
                         <span className="text-sm font-medium text-gray-700">{t('favorites.favorites')}</span>
                       </Link>
 
+                      {/* Order History */}
+                      <Link
+                        to="/order-history"
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                      >
+                        <ShoppingCart className="w-5 h-5 text-gray-600" />
+                        <span className="text-sm font-medium text-gray-700">{t('orderHistory.title')}</span>
+                      </Link>
+
                       {/* Logout */}
                       <button
                         onClick={handleLogout}
@@ -223,6 +233,14 @@ export default function Header() {
                   >
                     <Heart className="w-5 h-5" />
                     <span>{t('favorites.favorites')}</span>
+                  </Link>
+                  <Link
+                    to="/order-history"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-red-600 hover:bg-gray-50"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    <span>{t('orderHistory.title')}</span>
                   </Link>
                   <button
                     onClick={() => {

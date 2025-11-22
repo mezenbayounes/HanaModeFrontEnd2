@@ -192,7 +192,11 @@
     "size": "Taille",
     "qty": "Qté",
     "color": "Couleur",
-    "orderError": "Une erreur s'est produite lors de la passation de votre commande."
+    "orderError": "Une erreur s'est produite lors de la passation de votre commande.",
+    "email": "Email",
+  "enterEmail": "Entrez votre email",
+  "emailRequired": "L'email est obligatoire",
+  "emailInvalid": "Adresse email invalide"
   },
   "orderConfirmation": {
     "orderSummary": "Récapitulatif de la Commande",
@@ -404,5 +408,11 @@
     "address": "Adresse de Livraison",
     "products": "Articles Commandés",
     "orderDate": "Date de Commande"
+  },
+  "orderHistory": {
+    "title": "Mes Commandes",
+    "subtitle": "Consultez et suivez l'historique de vos commandes",
+    "noOrders": "Aucune commande pour le moment",
+    "startShopping": "Commencez vos achats pour voir vos commandes ici"
   }
 }

@@ -192,7 +192,11 @@
     "size": "Size",
     "qty": "Qty",
     "color": "Color",
-    "orderError": "An error occurred while placing your order."
+    "orderError": "An error occurred while placing your order.",
+    "email": "Email",
+  "enterEmail": "Enter your email",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Invalid email address"
   },
   "orderConfirmation": {
     "orderSummary": "Order Summary",
@@ -400,5 +404,11 @@
     "address": "Shipping Address",
     "products": "Order Items",
     "orderDate": "Order Date"
+  },
+  "orderHistory": {
+    "title": "My Orders",
+    "subtitle": "View and track your order history",
+    "noOrders": "No orders yet",
+    "startShopping": "Start shopping to see your orders here"
   }
 }

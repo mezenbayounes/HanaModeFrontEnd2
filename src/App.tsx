@@ -23,6 +23,7 @@ import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import FavoritesPage from './pages/FavoritesPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 import AddAdminPage from './pages/AddAdminPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import { AuthProvider } from './context/AuthContext';
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="/user-login" element={<UserLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           
