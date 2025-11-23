@@ -29,11 +29,12 @@ import AdminOrdersPage from './pages/AdminOrdersPage';
 import { AuthProvider } from './context/AuthContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import GoogleCallbackPage from './pages/GoogleCallbackPage';
 
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin') || location.pathname === '/add-category';
-  const isAuthRoute = location.pathname === '/login-admin-console' || location.pathname === '/user-login' || location.pathname === '/register';
+  const isAuthRoute = location.pathname === '/login-admin-console' || location.pathname === '/user-login' || location.pathname === '/register' || location.pathname === '/auth/google/callback';
   const isPasswordRoute = location.pathname === '/forgot-password' || location.pathname === '/reset-password';
   const isAddAdminRoute = location.pathname === '/add-admin';
 
@@ -56,6 +57,7 @@ function AppContent() {
          <Route path="/login-admin-console" element={<LoginPage />} />
           <Route path="/user-login" element={<UserLoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/order-history" element={<OrderHistoryPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
