@@ -37,7 +37,7 @@ const AddAdminPage: React.FC = () => {
         password,
         role: "admin"
       });
-      setMessage(t('admin.addAdminSuccess', 'Admin created successfully!'));
+      setMessage(t('admin.addAdminSuccess', 'Admin created! Verification email sent.'));
       setTimeout(() => {
         navigate('/login-admin-console');
       }, 1200);

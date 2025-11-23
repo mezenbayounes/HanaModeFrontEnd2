@@ -30,6 +30,8 @@ import { AuthProvider } from './context/AuthContext';
 import { FavoritesProvider } from './context/FavoritesContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import GoogleCallbackPage from './pages/GoogleCallbackPage';
+import AdminMessagesPage from './pages/AdminMessagesPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 
 function AppContent() {
   const location = useLocation();
@@ -37,10 +39,12 @@ function AppContent() {
   const isAuthRoute = location.pathname === '/login-admin-console' || location.pathname === '/user-login' || location.pathname === '/register' || location.pathname === '/auth/google/callback';
   const isPasswordRoute = location.pathname === '/forgot-password' || location.pathname === '/reset-password';
   const isAddAdminRoute = location.pathname === '/add-admin';
+  const isVerifyEmailRoute = location.pathname === '/verify-email';
+  const hideHeaderFooter = isAdminRoute || isAuthRoute || isPasswordRoute || isAddAdminRoute || isVerifyEmailRoute;
 
   return (
     <div className="flex flex-col min-h-screen">
-      {!isAdminRoute && !isAuthRoute && !isPasswordRoute && !isAddAdminRoute && <Header />}
+      {!hideHeaderFooter && <Header />}
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -60,6 +64,7 @@ function AppContent() {
           <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/order-history" element={<OrderHistoryPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           
@@ -72,10 +77,11 @@ function AppContent() {
             <Route path="/admin/products/edit/:id" element={<EditProductPage />} />
             <Route path="/admin/product/:id" element={<ProductDetailsAdminPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            <Route path="/admin/messages" element={<AdminMessagesPage />} />
           </Route>
         </Routes>
       </main>
-      {!isAdminRoute && !isAuthRoute && !isPasswordRoute && !isAddAdminRoute && <Footer />}
+      {!hideHeaderFooter && <Footer />}
     </div>
   );
 }

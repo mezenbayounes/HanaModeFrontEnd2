@@ -37,7 +37,11 @@ export default function UserLoginPage() {
       login(token, user);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.message || t('auth.loginFailed'));
+      if (err.response?.data?.requiresVerification) {
+        navigate('/verify-email', { state: { email: err.response.data.email || email } });
+      } else {
+        setError(err.response?.data?.message || t('auth.loginFailed'));
+      }
     }
   };
 

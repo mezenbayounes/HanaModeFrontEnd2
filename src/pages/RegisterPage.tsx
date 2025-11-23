@@ -52,8 +52,13 @@ export default function RegisterPage() {
         address: form.address,
         password: form.password,
       });
-      register(data.token, data.user);
-      navigate('/');
+      
+      if (data.requiresVerification) {
+        navigate('/verify-email', { state: { email: form.email } });
+      } else {
+        register(data.token, data.user);
+        navigate('/');
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || t('auth.registrationFailed'));
     } finally {

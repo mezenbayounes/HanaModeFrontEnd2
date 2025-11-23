@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { LayoutGrid, PlusCircle, Package, LogOut, UserPlus, ListOrdered, Menu, X } from 'lucide-react';
+import { LayoutGrid, PlusCircle, Package, LogOut, UserPlus, ListOrdered, Menu, X, MessageSquare } from 'lucide-react';
 import React, { useState } from 'react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '../context/AuthContext';
@@ -23,10 +23,8 @@ export default function AdminNavbar() {
      { path: '/admin/orders', label: t('orders.adminTitle', 'Orders'), icon: ListOrdered },
       { path: '/admin/products', label: t('adminProduct.title'), icon: Package },
    
-    { path: '/admin/products/add', label: t('adminProduct.addProduct'), icon: PlusCircle },
-       { path: '/add-category', label: t('admin.manageCategories'), icon: LayoutGrid },
-
-    { path: '/add-admin', label: t('admin.addAdminTitle', 'Add Admin'), icon: UserPlus },
+    { path: '/add-category', label: t('admin.manageCategories'), icon: LayoutGrid },
+      { path: '/admin/messages', label: t('admin.messages', 'Messages'), icon: MessageSquare },
   ];
 
   const handleNavClick = () => {
@@ -66,6 +64,7 @@ export default function AdminNavbar() {
           {/* Right side - Language Switcher & Logout */}
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
+            
             <button 
               onClick={handleLogout} 
               className="p-2 text-gray-500 hover:text-gray-900 transition-colors"
@@ -73,6 +72,14 @@ export default function AdminNavbar() {
             >
               <LogOut className="w-5 h-5" />
             </button>
+
+            <Link
+              to="/add-admin"
+              className={`p-2 transition-colors ${isActive('/add-admin') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+              title={t('admin.addAdminTitle', 'Add Admin')}
+            >
+              <UserPlus className="w-5 h-5" />
+            </Link>
 
             {/* Mobile menu button */}
             <button

@@ -198,24 +198,27 @@ export default function CategoryPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             
-            <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
+            <div className="bg-white/15 backdrop-blur px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.stylesAvailable')}</p>
               <p className="text-2xl font-bold">{products.length}</p>
             </div>
-            
+            {/* in stock 
             <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.inStock')}</p>
               <p className="text-2xl font-bold">
                 {products.filter(product => product.inStock).length}
               </p>
             </div>
+            */}
+            {/* best deals 
             <div className="bg-white/15 backdrop-blur  px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.bestDeals',)}</p>
               <p className="text-2xl font-bold">
                 {products.filter(product => product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price).length}
               </p>
             </div>
-            <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
+            */}
+            <div className="bg-white/15 backdrop-blur  px-5 py-4 text-white">
               <p className="text-sm text-white/70">{t('category.priceRange')}</p>
               <p className="text-xl font-semibold">
                 {priceStats ? `${priceStats.min} - ${priceStats.max} DNT` : '—'}

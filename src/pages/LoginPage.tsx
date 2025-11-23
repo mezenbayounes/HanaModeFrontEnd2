@@ -22,7 +22,7 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/loginAdmin`, {
+      const response = await axios.post(`${API_URL}/api/auth/login-admin`, {
         email,
         password,
       });
@@ -31,7 +31,11 @@ export default function LoginPage() {
       login(token, user);
       navigate('/admin/products');
     } catch (err: any) {
-      setError(err.response?.data?.message || t('auth.loginFailed'));
+      if (err.response?.data?.requiresVerification) {
+        navigate('/verify-email', { state: { email: err.response.data.email || email } });
+      } else {
+        setError(err.response?.data?.message || t('auth.loginFailed'));
+      }
     }
   };
 

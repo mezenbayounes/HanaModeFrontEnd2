@@ -16,3 +16,17 @@ export const submitContactForm = async (payload: ContactPayload) => {
   return res.data;
 };
 
+export interface ContactMessage {
+  _id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  message: string;
+  createdAt: string;
+}
+
+export const getContactMessages = async () => {
+  const res = await axios.get<ContactMessage[]>(API_URL);
+  return res.data;
+};
+
