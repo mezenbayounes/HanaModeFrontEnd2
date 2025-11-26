@@ -5,7 +5,7 @@ import { API_URL as BASE_URL } from "../config";
 const API_URL = `${BASE_URL}/api/categories`;
 
 export type Category = {
-  _id: string;
+  id: number;
   name: string;
   image: string;
   isHidden: boolean;
@@ -56,12 +56,12 @@ export const getCategories = async (isAdmin: boolean = false) => {
   return res.data;
 };
 
-export const getCategoryById = async (id: string) => {
+export const getCategoryById = async (id: number) => {
   const res = await axios.get(`${API_URL}/${id}`);
   return res.data;
 };
 
-export const updateCategory = async (id: string, payload: FormData | CategoryPayload) => {
+export const updateCategory = async (id: number, payload: FormData | CategoryPayload) => {
   const formData = buildFormData(payload);
   const res = await axios.put(`${API_URL}/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" }
@@ -69,7 +69,7 @@ export const updateCategory = async (id: string, payload: FormData | CategoryPay
   return res.data;
 };
 
-export const deleteCategory = async (id: string) => {
+export const deleteCategory = async (id: number) => {
   const res = await axios.delete(`${API_URL}/${id}`);
   return res.data;
 };

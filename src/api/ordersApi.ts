@@ -7,7 +7,7 @@ const API_URL = `${BASE_URL}/api/orders`;
 
 export interface CreateOrderDTO {
   items: {
-    product: string;   // product._id
+    product: number;   // product.id
     quantity: number;
     size: CartItem["size"];
     color?: string;

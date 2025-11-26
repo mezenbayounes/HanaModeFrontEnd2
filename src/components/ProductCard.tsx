@@ -26,16 +26,16 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const handleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (isFavorite(product._id)) {
-      removeFromFavorites(product._id);
+    if (isFavorite(product.id)) {
+      removeFromFavorites(product.id);
     } else {
-      addToFavorites(product._id);
+      addToFavorites(product.id);
     }
   };
 
   return (
     <Link
-      to={`/product/${product._id}`}
+      to={`/product/${product.id}`}
       className="group bg-white rounded-l overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 w-80"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -76,7 +76,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="bg-white text-gray-900 p-2 rounded-l shadow-lg hover:bg-gray-100 transition-colors"
             onClick={handleFavorite}
           >
-            <Heart className={isFavorite(product._id) ? 'w-5 h-5 text-red-600' : 'w-5 h-5 text-gray-600'} />
+            <Heart className={isFavorite(product.id) ? 'w-5 h-5 text-red-600' : 'w-5 h-5 text-gray-600'} />
           </button>
         </div>
       </div>

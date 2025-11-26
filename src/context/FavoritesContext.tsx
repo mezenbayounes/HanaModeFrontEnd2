@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 import { API_URL } from '../config';
 
 interface Product {
-  _id: string;
+  id: number;
   name: string;
   price: number;
   discountPrice?: number;
@@ -16,9 +16,9 @@ interface Product {
 interface FavoritesContextType {
   favorites: Product[];
   loading: boolean;
-  addToFavorites: (productId: string) => Promise<void>;
-  removeFromFavorites: (productId: string) => Promise<void>;
-  isFavorite: (productId: string) => boolean;
+  addToFavorites: (productId: number) => Promise<void>;
+  removeFromFavorites: (productId: number) => Promise<void>;
+  isFavorite: (productId: number) => boolean;
   refreshFavorites: () => Promise<void>;
 }
 
@@ -55,7 +55,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     refreshFavorites();
   }, [isAuthenticated, token]);
 
-  const addToFavorites = async (productId: string) => {
+  const addToFavorites = async (productId: number) => {
     if (!isAuthenticated || !token) {
       throw new Error('Must be logged in to add favorites');
     }
@@ -77,7 +77,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const removeFromFavorites = async (productId: string) => {
+  const removeFromFavorites = async (productId: number) => {
     if (!isAuthenticated || !token) {
       throw new Error('Must be logged in to remove favorites');
     }
@@ -95,8 +95,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const isFavorite = (productId: string): boolean => {
-    return favorites.some((product) => product._id === productId);
+  const isFavorite = (productId: number): boolean => {
+    return favorites.some((product) => product.id === productId);
   };
 
   return (

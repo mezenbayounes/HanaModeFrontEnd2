@@ -8,7 +8,7 @@ const backendBaseUrl = API_URL;
 
 export default function CategoriesPage() {
   const { t } = useTranslation();
-  const [categories, setCategories] = useState<{ _id: string; name: string; image?: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string; image?: string }[]>([]);
 
   useEffect(() => {
     const fetchCats = async () => {
@@ -61,7 +61,7 @@ export default function CategoriesPage() {
 
             return (
               <Link
-                key={cat._id}
+                key={cat.id}
                 to={`/category/${routeParam}`}
                 className="group bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-lg transition-shadow transform hover:-translate-y-1"
               >

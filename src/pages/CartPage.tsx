@@ -47,7 +47,7 @@ export default function CartPage() {
       <div className="lg:col-span-2 space-y-4">
         {items.map((item, index) => (
           <div
-            key={`${item.product._id}-${item.size}`}
+            key={`${item.product.id}-${item.size}`}
             className="bg-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row gap-4 md:gap-6"
           >
             {/* Product Image */}
@@ -71,7 +71,7 @@ export default function CartPage() {
                   </p>
                 </div>
                 <button
-                  onClick={() => removeItem(item.product._id, item.size)}
+                  onClick={() => removeItem(item.product.id, item.size)}
                   className="text-red-500 hover:text-red-600 p-2"
                 >
                   <Trash2 className="w-5 h-5" />
@@ -101,7 +101,7 @@ export default function CartPage() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() =>
-                      updateQuantity(item.product._id, item.size, item.quantity - 1)
+                      updateQuantity(item.product.id, item.size, item.quantity - 1)
                     }
                     className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                   >
@@ -110,7 +110,7 @@ export default function CartPage() {
                   <span className="font-bold w-12 text-center">{item.quantity}</span>
                   <button
                     onClick={() =>
-                      updateQuantity(item.product._id, item.size, item.quantity + 1)
+                      updateQuantity(item.product.id, item.size, item.quantity + 1)
                     }
                     className="p-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                   >
@@ -119,11 +119,17 @@ export default function CartPage() {
                 </div>
 
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-gray-900">
-                    {((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)} DNT
-                  </div>
-                  {item.product.discountPrice && (
-                    <div className="text-sm text-gray-400 line-through">
+                  {item.product.discountPrice && item.product.discountPrice > 0 && item.product.discountPrice < item.product.price ? (
+                    <>
+                      <div className="text-2xl font-bold text-gray-900">
+                        {(item.product.discountPrice * item.quantity).toFixed(2)} DNT
+                      </div>
+                      <div className="text-sm text-gray-400 line-through">
+                        {(item.product.price * item.quantity).toFixed(2)} DNT
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-2xl font-bold text-gray-900">
                       {(item.product.price * item.quantity).toFixed(2)} DNT
                     </div>
                   )}

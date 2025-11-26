@@ -1,5 +1,5 @@
 export interface Product {
-  _id: string;
+  id: number;
   name: string;
   category: string;
   description: string;
@@ -39,7 +39,7 @@ export interface OrderDetails {
 }
 
 export interface Order {
-  id: string;
+  id: number;
   items: CartItem[];
   customerDetails: OrderDetails;
   total: number;

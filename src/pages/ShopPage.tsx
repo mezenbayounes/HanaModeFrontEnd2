@@ -56,7 +56,7 @@ const [sortOrder, setSortOrder] = useState("asc");
 type Category = string | "all";
   const [selectedCategory, setSelectedCategory] = useState<Category>("all");
   const [showInStockOnly, setShowInStockOnly] = useState(false);
-  const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: number; name: string }[]>([]);
 
 
   const filteredProducts = products.filter((product) => {
@@ -122,7 +122,7 @@ const filteredCategories = categoryOptions
 {filteredProducts.length > 0 ? (
   <div className="grid grid-cols-1 min-[678px]:grid-cols-2 min-[1319px]:grid-cols-3 gap-6 md:gap-10 justify-items-center">
     {filteredProducts.map((product) => (
-      <ProductCard key={product._id} product={product} />
+      <ProductCard key={product.id} product={product} />
     ))}
   </div>
 ) : (

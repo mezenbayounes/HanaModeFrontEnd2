@@ -146,11 +146,17 @@ export default function OrderConfirmationPage() {
                           Qty: {item.quantity}
                         </span>
                         <div className="text-right">
-                          <p className="font-bold text-gray-900">
-                            {((item.product.discountPrice || item.product.price) * item.quantity).toFixed(2)} DNT
-                          </p>
-                          {item.product.discountPrice && (
-                            <p className="text-xs text-gray-400 line-through">
+                          {item.product.discountPrice && item.product.discountPrice > 0 && item.product.discountPrice < item.product.price ? (
+                            <>
+                              <p className="font-bold text-gray-900">
+                                {(item.product.discountPrice * item.quantity).toFixed(2)} DNT
+                              </p>
+                              <p className="text-xs text-gray-400 line-through">
+                                {(item.product.price * item.quantity).toFixed(2)} DNT
+                              </p>
+                            </>
+                          ) : (
+                            <p className="font-bold text-gray-900">
                               {(item.product.price * item.quantity).toFixed(2)} DNT
                             </p>
                           )}

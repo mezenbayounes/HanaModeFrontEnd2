@@ -82,7 +82,7 @@ export default function CheckoutPage() {
 
     const orderData = {
       items: items.map((item) => ({
-        product: item.product._id,
+        product: item.product.id,
         quantity: item.quantity,
         size: item.size,
         colorName: item.color, // Send color name
@@ -255,7 +255,7 @@ export default function CheckoutPage() {
 
               <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
   {items.map((item) => (
-    <div key={`${item.product._id}-${item.size}`} className="flex gap-3">
+    <div key={`${item.product.id}-${item.size}`} className="flex gap-3">
       {/* Product Image */}
       <div className="w-16 h-20 flex-shrink-0 bg-gray-100 rounded-lg overflow-hidden">
         <img

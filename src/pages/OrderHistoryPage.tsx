@@ -9,7 +9,7 @@ import { API_URL } from '../config';
 
 interface OrderItem {
   product: {
-    _id: string;
+    id: number;
     name: string;
     images: string[];
     price: number;
@@ -18,13 +18,14 @@ interface OrderItem {
   quantity: number;
   size: string;
   color?: string;
+  colorName?: string;
   colorCode?: string;
 }
 
 interface Order {
-  _id: string;
+  id: number;
   items: OrderItem[];
-  total: number;
+  total: number | string;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   orderDate: string;
   customerDetails: {
@@ -150,7 +151,7 @@ export default function OrderHistoryPage() {
         <div className="space-y-6">
           {orders.map((order) => (
             <div
-              key={order._id}
+              key={order.id}
               className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
             >
               {/* Order Header */}
@@ -170,7 +171,7 @@ export default function OrderHistoryPage() {
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-gray-500">{t('orders.orderId')}:</span>
                       <span className="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded">
-                        {order._id}
+                        {order.id}
                       </span>
                     </div>
                   </div>
@@ -179,7 +180,7 @@ export default function OrderHistoryPage() {
                     <div className="text-right">
                       <div className="text-xs text-gray-500 mb-1">{t('orders.total')}</div>
                       <div className="text-2xl font-bold text-gray-900">
-                        {order.total.toFixed(2)} DNT
+                        {Number(order.total).toFixed(2)} DNT
                       </div>
                     </div>
                     <div>
@@ -218,11 +219,21 @@ export default function OrderHistoryPage() {
                           <span className="text-gray-600">
                             {t('product.size')}: <span className="font-medium">{item.size}</span>
                           </span>
-                          {item.color && (
-                            <span className="text-gray-600">
-                              • {t('product.color')}:{' '}
-                              <span className="font-medium capitalize">{item.color}</span>
-                            </span>
+                          {(item.colorName || item.color) && (
+                            <div className="flex items-center gap-1 text-gray-600">
+                              <span>• {t('product.color')}:</span>
+                              <div className="flex items-center gap-1">
+                                {item.colorCode && (
+                                  <span
+                                    className="w-3 h-3 rounded-full border border-gray-300"
+                                    style={{ backgroundColor: item.colorCode }}
+                                  />
+                                )}
+                                <span className="font-medium capitalize">
+                                  {item.colorName || item.color}
+                                </span>
+                              </div>
+                            </div>
                           )}
                           <span className="text-gray-600">
                             • {t('product.quantity')}: <span className="font-medium">{item.quantity}</span>

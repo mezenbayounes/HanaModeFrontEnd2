@@ -12,7 +12,7 @@ import heroImage from '../assets/heroImage1.png'; // adjust the path as needed
 import { API_URL } from '../config';
 
 interface Category {
-  _id: string;
+  id: number;
   name: string;
   image?: string;
 }
@@ -260,7 +260,7 @@ const bestSellers = products.filter(p => p.bestSeller);
         ) : (
           featured.map((product, index) => (
             <div 
-              key={product._id} 
+              key={product.id} 
               className="animate-fade-in-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
@@ -321,7 +321,7 @@ const bestSellers = products.filter(p => p.bestSeller);
               ) : (
                 bestSellers.map((product, index) => (
                   <div 
-                    key={product._id}
+                    key={product.id}
                     className="animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
@@ -372,7 +372,7 @@ const bestSellers = products.filter(p => p.bestSeller);
                 {categories.map((category, index) => {
                   return (
                     <Link
-                      key={category._id}
+                      key={category.id}
                       to={`/category/${category.slug}`}
                       className="group relative overflow-hidden rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-700 transform hover:-translate-y-3 hover:scale-[1.02] animate-fade-in-up h-[500px] sm:h-[600px]"
                       style={{ animationDelay: `${index * 100}ms` }}

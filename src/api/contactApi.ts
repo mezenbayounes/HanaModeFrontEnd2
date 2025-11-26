@@ -17,7 +17,7 @@ export const submitContactForm = async (payload: ContactPayload) => {
 };
 
 export interface ContactMessage {
-  _id: string;
+  id: number;
   name: string;
   email: string;
   phone?: string;

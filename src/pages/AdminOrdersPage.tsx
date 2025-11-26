@@ -19,7 +19,7 @@ interface OrderItem {
 }
 
 interface Order {
-	_id: string;
+	id: number;
 	email: string;
 	items: OrderItem[];
 	customerDetails: {
@@ -27,6 +27,7 @@ interface Order {
 		lastName: string;
 		address: string;
 		phone: string;
+		email?: string; // Email might also be in customerDetails
 	};
 	total: number;
 	status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
@@ -66,7 +67,7 @@ const AdminOrdersPage: React.FC = () => {
 		fetchOrders();
 	}, [token]);
 
-	const handleStatusChange = async (orderId: string, newStatus: Order['status']) => {
+	const handleStatusChange = async (orderId: number, newStatus: Order['status']) => {
 		try {
 			await axios.patch(
 				`${API_URL}/api/orders/${orderId}/status`,
@@ -75,7 +76,7 @@ const AdminOrdersPage: React.FC = () => {
 			);
 			setOrders(orders =>
 				orders.map(order =>
-					order._id === orderId ? { ...order, status: newStatus } : order
+					order.id === orderId ? { ...order, status: newStatus } : order
 				)
 			);
 		} catch (err: any) {
@@ -99,7 +100,7 @@ const AdminOrdersPage: React.FC = () => {
 		// Name filter
 		if (filterName) {
 			const fullName = `${order.customerDetails.firstName} ${order.customerDetails.lastName}`.toLowerCase();
-			const email = order.email.toLowerCase();
+			const email = order.email?.toLowerCase() || '';
 			const searchTerm = filterName.toLowerCase();
 			if (!fullName.includes(searchTerm) && !email.includes(searchTerm)) {
 				return false;
@@ -303,7 +304,7 @@ const AdminOrdersPage: React.FC = () => {
 					)}
 					{filteredOrders.map(order => (
 						<div
-							key={order._id}
+							key={order.id}
 							className="bg-white rounded-xl md:rounded-2xl shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-all"
 						>
 							<div className="p-4 md:p-6 space-y-4">
@@ -312,7 +313,7 @@ const AdminOrdersPage: React.FC = () => {
 									<div className="space-y-2">
 										<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
 											<span className="text-sm font-medium text-gray-500 uppercase tracking-wider">{t('orders.orderId', 'Order ID')}</span>
-											<span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded break-all sm:break-normal">{order._id}</span>
+											<span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded break-all sm:break-normal">{order.id}</span>
 										</div>
 										<div className="flex items-center gap-2 text-sm text-gray-500">
 											<svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -327,7 +328,7 @@ const AdminOrdersPage: React.FC = () => {
 										<label className="text-sm font-semibold text-gray-700 uppercase tracking-wider">{t('orders.status', 'Status')}</label>
 										<select
 											value={order.status}
-											onChange={e => handleStatusChange(order._id, e.target.value as Order['status'])}
+											onChange={e => handleStatusChange(order.id, e.target.value as Order['status'])}
 											className="px-3 md:px-4 py-2 md:py-2.5 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all bg-white text-base font-medium"
 										>
 											{statusOptions.map(status => (

@@ -12,7 +12,7 @@ export default function FavoritesPage() {
   const navigate = useNavigate();
   const addToCart = useCartStore(state => state.addItem);
 
-  const handleRemoveFavorite = async (productId: string) => {
+  const handleRemoveFavorite = async (productId: number) => {
     try {
       await removeFromFavorites(productId);
     } catch (error) {
@@ -22,7 +22,7 @@ export default function FavoritesPage() {
 
   const handleAddToCart = (product: any) => {
     // Always navigate to product page to select size/color
-    navigate(`/product/${product._id}`);
+    navigate(`/product/${product.id}`);
   };
 
   if (loading) {
@@ -69,19 +69,25 @@ export default function FavoritesPage() {
 
               return (
                 <div
-                  key={product._id}
+                  key={product.id}
                   className="bg-white  overflow-hidden hover:shadow-xl transition-shadow duration-300"
                 >
                   {/* Product Image */}
                   <div
                     className="relative h-80 bg-gray-200 cursor-pointer group"
-                    onClick={() => navigate(`/product/${product._id}`)}
+                    onClick={() => navigate(`/product/${product.id}`)}
                   >
-                    <img
-                      src={`${API_URL}${product.images[0]}`}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {product.images && product.images.length > 0 ? (
+                      <img
+                        src={`${API_URL}${product.images[0]}`}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-400">
+                        <ShoppingCart className="w-12 h-12" />
+                      </div>
+                    )}
                     
                     {/* Discount Badge */}
                     {hasDiscount && (
@@ -100,7 +106,7 @@ export default function FavoritesPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleRemoveFavorite(product._id);
+                        handleRemoveFavorite(product.id);
                       }}
                       className="absolute top-3 right-3 p-2 bg-white  hover:bg-red-50 transition-colors"
                     >
@@ -112,7 +118,7 @@ export default function FavoritesPage() {
                   <div className="p-4">
                     <h3
                       className="text-lg font-semibold text-gray-900 mb-2 cursor-pointer hover:text-gray-600"
-                      onClick={() => navigate(`/product/${product._id}`)}
+                      onClick={() => navigate(`/product/${product.id}`)}
                     >
                       {product.name}
                     </h3>

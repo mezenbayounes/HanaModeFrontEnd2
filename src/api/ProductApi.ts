@@ -16,7 +16,7 @@ export type ProductSize = {
 };
 
 export type Product = {
-    _id: string;
+    id: number;
     name: string;
     category: string;
     description: string;
@@ -78,6 +78,17 @@ const buildFormData = (payload: ProductPayload) => {
     return formData;
 };
 
+const parseProduct = (product: any): Product => {
+    return {
+        ...product,
+        price: typeof product.price === 'string' ? parseFloat(product.price) : product.price,
+        discountPrice: product.discountPrice ? (typeof product.discountPrice === 'string' ? parseFloat(product.discountPrice) : product.discountPrice) : undefined,
+        images: typeof product.images === 'string' ? JSON.parse(product.images) : product.images,
+        sizes: typeof product.sizes === 'string' ? JSON.parse(product.sizes) : product.sizes,
+        color: typeof product.color === 'string' ? JSON.parse(product.color) : product.color,
+    };
+};
+
 export const getProducts = async () => {
     const token = localStorage.getItem('token');
     const headers: any = {};
@@ -88,12 +99,12 @@ export const getProducts = async () => {
     }
 
     const res = await axios.get(API_URL, { headers });
-    return res.data;
+    return res.data.map(parseProduct);
 };
 
-export const getProduct = async (id: string) => {
+export const getProduct = async (id: number) => {
     const res = await axios.get(`${API_URL}/${id}`);
-    return res.data;
+    return parseProduct(res.data);
 };
 
 export const createProduct = async (payload: ProductPayload) => {
@@ -101,23 +112,23 @@ export const createProduct = async (payload: ProductPayload) => {
     const res = await axios.post(API_URL, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return res.data;
+    return parseProduct(res.data);
 };
 
-export const updateProduct = async (id: string, payload: ProductPayload) => {
+export const updateProduct = async (id: number, payload: ProductPayload) => {
     const formData = buildFormData(payload);
     const res = await axios.put(`${API_URL}/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return res.data;
+    return parseProduct(res.data);
 };
 
-export const deleteProduct = async (id: string) => {
+export const deleteProduct = async (id: number) => {
     const res = await axios.delete(`${API_URL}/${id}`);
     return res.data;
 };
 
-export const toggleProductVisibility = async (id: string) => {
+export const toggleProductVisibility = async (id: number) => {
     const res = await axios.patch(`${API_URL}/${id}/toggle-visibility`);
     return res.data;
 };

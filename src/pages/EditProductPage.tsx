@@ -39,7 +39,7 @@ export default function EditProductPage() {
       try {
         setLoading(true);
         const [productData, categoriesData] = await Promise.all([
-          getProduct(id),
+          getProduct(Number(id)),
           getCategories(true)
         ]);
         
@@ -173,7 +173,7 @@ export default function EditProductPage() {
         ...formData,
         existingImages: existingImages
       };
-      await updateProduct(id, updatePayload);
+      await updateProduct(Number(id), updatePayload);
       setSuccess(t('adminProduct.successUpdated'));
       setTimeout(() => {
         navigate('/admin/products');
@@ -265,7 +265,7 @@ export default function EditProductPage() {
               >
                 <option value="">{t('adminProduct.selectCategory')}</option>
                 {categories.map(cat => (
-                  <option key={cat._id} value={cat.name}>{cat.name}</option>
+                  <option key={cat.id} value={cat.name}>{cat.name}</option>
                 ))}
               </select>
             </div>

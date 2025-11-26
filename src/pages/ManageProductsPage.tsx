@@ -35,7 +35,7 @@ export default function ManageProductsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm(t('adminProduct.deleteConfirm'))) {
       try {
         await deleteProduct(id);
@@ -59,7 +59,7 @@ export default function ManageProductsPage() {
     }
   };
 
-  const handleToggleVisibility = async (id: string) => {
+  const handleToggleVisibility = async (id: number) => {
     try {
       const result = await toggleProductVisibility(id);
       setSuccess(result.message);
@@ -191,12 +191,12 @@ export default function ManageProductsPage() {
               {filteredProducts.map((product) => (
                 viewMode === 'grid' ? (
                   <div 
-                    key={product._id} 
+                    key={product.id} 
                     className="border border-gray-200  hover:shadow-md transition-shadow overflow-hidden"
                   >
                     <div 
                       className="relative h-48 overflow-hidden cursor-pointer"
-                      onClick={() => navigate(`/admin/product/${product._id}`)}
+                      onClick={() => navigate(`/admin/product/${product.id}`)}
                     >
                       <img
                         src={product.images[0] ? `${API_URL}${product.images[0]}` : 'https://via.placeholder.com/300'}
@@ -253,14 +253,14 @@ export default function ManageProductsPage() {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => navigate(`/admin/products/edit/${product._id}`)}
+                          onClick={() => navigate(`/admin/products/edit/${product.id}`)}
                           className="flex items-center gap-2 px-4 py-2  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
                         >
                           <Edit2 className="w-4 h-4" />
                           {t('admin.edit')}
                         </button>
                         <button
-                          onClick={() => handleToggleVisibility(product._id)}
+                          onClick={() => handleToggleVisibility(product.id)}
                           className={`flex items-center gap-2 px-4 py-2  font-semibold transition-colors ${
                             product.isHidden 
                               ? 'bg-green-100 text-green-700 hover:bg-green-200' 
@@ -271,7 +271,7 @@ export default function ManageProductsPage() {
                           {product.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
                         </button>
                         <button
-                          onClick={() => handleDelete(product._id)}
+                          onClick={() => handleDelete(product.id)}
                           className="flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -281,15 +281,15 @@ export default function ManageProductsPage() {
                   </div>
                 ) : (
                   <ProductListItem
-                    key={product._id}
+                    key={product.id}
                     product={product}
-                    onClick={() => navigate(`/admin/product/${product._id}`)}
+                    onClick={() => navigate(`/admin/product/${product.id}`)}
                     actions={
                       <>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/admin/products/edit/${product._id}`);
+                            navigate(`/admin/products/edit/${product.id}`);
                           }}
                           className="flex items-center gap-2 px-4 py-2  bg-gray-200 text-gray-600 font-semibold hover:bg-blue-100 transition-colors"
                         >
@@ -299,7 +299,7 @@ export default function ManageProductsPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleToggleVisibility(product._id);
+                            handleToggleVisibility(product.id);
                           }}
                           className={`flex items-center gap-2 px-4 py-2  font-semibold transition-colors ${
                             product.isHidden 
@@ -313,7 +313,7 @@ export default function ManageProductsPage() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleDelete(product._id);
+                            handleDelete(product.id);
                           }}
                           className="flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-600  hover:bg-red-200 transition-colors"
                         >
