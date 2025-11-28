@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Edit2, Upload, CheckCircle, AlertCircle, X } from 'lucide-react';
+import { Plus, Trash2, Edit2, Upload, CheckCircle, AlertCircle, X, Save } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { 
@@ -13,7 +13,7 @@ import AdminNavbar from '../components/AdminNavbar';
 import { API_URL } from '../config';
 
 interface Category {
-  _id: string;
+  id: number;
   name: string;
   image?: string;
   isHidden?: boolean;
@@ -33,7 +33,7 @@ export default function AddCategoryPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchCategories();
@@ -105,11 +105,11 @@ export default function AddCategoryPage() {
   const handleEdit = (category: Category) => {
     setFormData({ name: category.name, image: null, isHidden: category.isHidden || false });
     setImagePreview(category.image ? `${API_URL}${category.image}` : '');
-    setEditingId(category._id);
+    setEditingId(category.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     if (!window.confirm(t('alerte.delete'))) return;
 
     try {
@@ -268,7 +268,11 @@ export default function AddCategoryPage() {
                         : 'hover:shadow-lg transform hover:-translate-y-0.5'
                     }`}
                   >
-                    <Plus className={`w-5 h-5 ${submitting ? 'animate-pulse' : ''}`} />
+                    {editingId ? (
+                      <Save className={`w-5 h-5 ${submitting ? 'animate-pulse' : ''}`} />
+                    ) : (
+                      <Plus className={`w-5 h-5 ${submitting ? 'animate-pulse' : ''}`} />
+                    )}
                     {submitting ? t('admin.saving') : editingId ? t('admin.update') : t('admin.addCategory')}
                   </button>
                   {editingId && (
@@ -316,7 +320,7 @@ export default function AddCategoryPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {filteredCategories.map((category) => (
                     <div
-                      key={category._id}
+                      key={category.id}
                       className="border border-gray-200 p-4 hover:shadow-md transition-shadow"
                     >
                       {category.image && (
@@ -343,7 +347,7 @@ export default function AddCategoryPage() {
                           {t('admin.edit')}
                         </button>
                         <button
-                          onClick={() => handleDelete(category._id)}
+                          onClick={() => handleDelete(category.id)}
                           className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-red-50 text-red-600  hover:bg-red-100 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />

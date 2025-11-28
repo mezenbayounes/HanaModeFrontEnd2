@@ -241,7 +241,9 @@
     "enterEmail": "your@email.com",
     "enterPhone": "Your phone number",
     "tellUs": "Tell us how we can help...",
-    "sendMessageButton": "Send Message"
+    "sendMessageButton": "Send Message",
+    "hours": "Mon-Sat: 8am - 7pm\nSun: 8am - 1pm",
+    "ourLocation": "Our Location"
   },
   "admin": {
     "panel": "Admin Panel",

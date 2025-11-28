@@ -26,7 +26,7 @@ export default function ProductDetailPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const productData = await getProductById(id!);
+        const productData = await getProductById(Number(id));
         setProduct(productData);
         const preferredSize =
           productData.sizes.find(size => size.inStock) || productData.sizes[0];
@@ -98,7 +98,7 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 font-hana">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <button
           onClick={() => navigate(-1)}
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
@@ -110,54 +110,83 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded-3xl overflow-hidden shadow-xl">
 
           {/* IMAGE SECTION */}
-          <div className="relative aspect-[3/4] lg:aspect-auto bg-gray-100 flex flex-col items-center">
-            <img
-              src={`${API_URL}${product.images[currentImage]}`}
-              className="w-full h-full object-cover"
-            />
-{/*    
-            <div className="absolute top-4 right-4">
-              {product.inStock ? (
-                <div className="bg-white border-2 border-green-500 text-green-500 w-24 h-6 flex items-center justify-center rounded-full font-bold text-sm">
-                  <CheckCircle className="w-5 h-5" />
-                  <span className="font-medium">{t('product.inStock')}</span>
+          <div className="relative bg-gray-100">
+            {/* Scrollable Images Container */}
+            <div 
+              className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide aspect-[3/4] lg:aspect-auto"
+              style={{ scrollBehavior: 'smooth' }}
+              onScroll={(e) => {
+                const container = e.currentTarget;
+                const scrollLeft = container.scrollLeft;
+                const itemWidth = container.offsetWidth;
+                const newIndex = Math.round(scrollLeft / itemWidth);
+                if (newIndex !== currentImage) {
+                  setCurrentImage(newIndex);
+                }
+              }}
+            >
+              {product.images.map((img, index) => (
+                <div
+                  key={index}
+                  className="min-w-full snap-center relative"
+                >
+                  <img
+                    src={`${API_URL}${img}`}
+                    alt={`${product.name} - ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
-              ) : (
-                <div className="bg-red-500 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
-                  <XCircle className="w-5 h-5" />
-                  <span className="font-medium">{t('product.outOfStock')}</span>
-                </div>
+              ))}
+            </div>
+
+            {/* Discount Badge */}
+            <div className="absolute top-5 left-1 flex flex-col gap-2 z-10">
+              {discountPercent > 0 && (
+                <span className="bg-white border-2 border-red-500 text-red-500 w-40 h-6 flex items-center justify-center font-bold text-sm">
+                  {t('product.save')} {discountPercent}%
+                </span>
               )}
             </div>
-*/}
-  
-{/* Discount / Badges */}
-<div className="absolute top-5 left-1 flex flex-col gap-2">
-  {discountPercent > 0 && (
-    <span className="bg-white border-2 border-red-500 text-red-500 w-40 h-6 flex items-center justify-center  font-bold text-sm">
-      {t('product.save')} {discountPercent}%
-    </span>
-  )}
 
-   {/* 
-  {product.bestSeller && (
-    <span className="bg-white border-2 border-purple-500 text-purple-500 w-40 h-6 flex items-center justify-center  font-bold text-sm">
-      {t('product.bestSeller')}
-    </span>
-  )}
-*/}
+            {/* Scroll Indicator Dots */}
+            <div className="absolute bottom-20 left-0 right-0 flex justify-center gap-2 z-10">
+              {product.images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    const container = document.querySelector('.flex.overflow-x-auto') as HTMLElement;
+                    if (container) {
+                      container.scrollLeft = index * container.offsetWidth;
+                    }
+                    setCurrentImage(index);
+                  }}
+                  className={`h-2 rounded-full transition-all ${
+                    currentImage === index 
+                      ? 'w-8 bg-white' 
+                      : 'w-2 bg-white/50 hover:bg-white/75'
+                  }`}
+                  aria-label={`Go to image ${index + 1}`}
+                />
+              ))}
+            </div>
 
-</div>
             {/* Thumbnails */}
-            <div className="flex gap-2 mt-4 px-4 overflow-x-auto">
+            <div className="flex gap-2 mt-4 px-4 pb-4 overflow-x-auto">
               {product.images.map((img, index) => (
                 <img
                   key={index}
                   src={`${API_URL}${img}`}
-                  className={`w-20 h-15 object-cover rounded-lg cursor-pointer border-2 transition ${
-                    currentImage === index ? 'border-rose-500' : 'border-transparent opacity-70'
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition flex-shrink-0 ${
+                    currentImage === index ? 'border-rose-500' : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
-                  onClick={() => setCurrentImage(index)}
+                  onClick={() => {
+                    const container = document.querySelector('.flex.overflow-x-auto') as HTMLElement;
+                    if (container) {
+                      container.scrollLeft = index * container.offsetWidth;
+                    }
+                    setCurrentImage(index);
+                  }}
                 />
               ))}
             </div>

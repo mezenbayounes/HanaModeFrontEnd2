@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white font-hana">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 justify-items-center">
           {/* Brand */}
           <div>
             {/* Logo */}
@@ -22,7 +22,7 @@ export default function Footer() {
                            
                            <span className="text-2xl font-serif italic tracking-wider">
                   <span className="text-white">Hana</span>
-                  <span className="text-red-600">Mori</span>
+                  <span className="text-red-600">Mode</span>
                 </span>
             </Link>
             <p className="text-gray-400 text-sm">
@@ -82,7 +82,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Categories */}
+          {/* Categories 
           <div>
             <h3 className="font-bold text-lg mb-4">{t('footer.styles')}</h3>
             <ul className="space-y-2">
@@ -113,7 +113,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
+*/}
           {/* Contact */}
           <div>
             <h3 className="font-bold text-lg mb-4">{t('footer.contact')}</h3>
@@ -121,30 +121,43 @@ export default function Footer() {
               <li className="flex items-start gap-2">
                 <Mail className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm text-gray-400">info@jeansboutique.com</p>
+                  <p className="text-sm text-gray-400">contact@hanamode.tn</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm text-gray-400">+1 (555) 123-4567</p>
+                  <p className="text-sm text-gray-400">+216 25 524 828</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm text-gray-400">
-                    123 Rue de la Mode<br />New York, NY 10001
+                    13 Rue de la kasabah<br />Bab Bhar, tunis
                   </p>
                 </div>
               </li>
             </ul>
+            {/* Mini Map */}
+            <div className="mt-4 rounded-lg overflow-hidden border-2 border-gray-700 shadow-lg">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3192.497!2d10.174758!3d36.799362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDQ3JzU3LjciTiAxMMKwMTAnMjkuMSJF!5e0!3m2!1sen!2stn!4v1234567890"
+                width="100%"
+                height="200"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="HanaMode Location"
+              ></iframe>
+            </div>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-8">
           <p className="text-center text-gray-400 text-sm">
-            © {new Date().getFullYear()} HanaMori. {t('common.allRightsReserved')}.
+            © {new Date().getFullYear()} HanaMode. {t('common.allRightsReserved')}.
           </p>
         </div>
       </div>

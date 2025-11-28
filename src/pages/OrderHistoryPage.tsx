@@ -199,21 +199,35 @@ export default function OrderHistoryPage() {
               {/* Order Items */}
               <div className="p-4 md:p-6">
                 <div className="space-y-4">
-                  {order.items.map((item, idx) => (
+                  {order.items && order.items.map((item, idx) => {
+                    if (!item) return null;
+                    const product = item.product || {};
+                    const productName = product?.name || t('product.unknown', 'Unknown Product');
+                    const productImage = product?.images?.[0];
+                    const productPrice = product?.price || 0;
+                    const productDiscountPrice = product?.discountPrice;
+
+                    return (
                     <div
                       key={idx}
                       className="flex gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
                     >
                       <div className="w-20 h-24 flex-shrink-0 bg-white rounded-lg overflow-hidden shadow-sm">
-                        <img
-                          src={`${API_URL}${item.product.images[0]}`}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover"
-                        />
+                        {productImage ? (
+                          <img
+                            src={`${API_URL}${productImage}`}
+                            alt={productName}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                            <ShoppingBag className="w-8 h-8 text-gray-400" />
+                          </div>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-gray-900 mb-1 truncate">
-                          {item.product.name}
+                          {productName}
                         </h3>
                         <div className="flex flex-wrap gap-2 text-sm mb-2">
                           <span className="text-gray-600">
@@ -240,26 +254,27 @@ export default function OrderHistoryPage() {
                           </span>
                         </div>
                         <div className="text-right">
-                          {item.product.discountPrice && item.product.discountPrice > 0 && item.product.discountPrice < item.product.price ? (
+                          {productDiscountPrice && productDiscountPrice > 0 && productDiscountPrice < productPrice ? (
                             // Has valid discount - show discount price and strikethrough original
                             <>
                               <p className="font-bold text-gray-900">
-                                {(item.product.discountPrice * item.quantity).toFixed(2)} DNT
+                                {(productDiscountPrice * item.quantity).toFixed(2)} DNT
                               </p>
                               <p className="text-xs text-gray-400 line-through">
-                                {(item.product.price * item.quantity).toFixed(2)} DNT
+                                {(productPrice * item.quantity).toFixed(2)} DNT
                               </p>
                             </>
                           ) : (
                             // No discount - just show regular price
                             <p className="font-bold text-gray-900">
-                              {(item.product.price * item.quantity).toFixed(2)} DNT
+                              {(productPrice * item.quantity).toFixed(2)} DNT
                             </p>
                           )}
                         </div>
                       </div>
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
 
                 {/* Delivery Address */}

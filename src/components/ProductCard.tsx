@@ -8,9 +8,10 @@ import { API_URL } from '../config';
 
 interface ProductCardProps {
   product: Product;
+  size?: 'small' | 'default';
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, size = 'default' }: ProductCardProps) {
   const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
@@ -33,10 +34,40 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  // Size-specific classes
+  const sizeClasses = {
+    small: {
+      card: 'w-40',
+      padding: 'p-2',
+      title: 'text-sm',
+      priceMain: 'text-base',
+      priceStrike: 'text-xs',
+      priceGap: 'gap-1',
+      buttonPadding: 'px-12 py-4',
+      buttonText: 'text-base',
+      buttonMargin: 'mt-4',
+      buttonWidth: 'w-80'
+    },
+    default: {
+      card: 'w-80',
+      padding: 'p-4',
+      title: 'text-lg',
+      priceMain: 'text-2xl',
+      priceStrike: 'text-sm',
+      priceGap: 'gap-3',
+      buttonPadding: 'px-20 py-4',
+      buttonText: '',
+      buttonMargin: 'mt-6',
+      buttonWidth: 'w-auto'
+    }
+  };
+
+  const classes = sizeClasses[size];
+
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group bg-white rounded-l overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 w-80"
+      className={`group bg-white rounded-l overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 ${classes.card}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -82,13 +113,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className={classes.padding}>
         {/* Category */}
         <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">
           {product.category.replace('-', ' ')}
         </div>
         {/* Name */}
-        <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1">
+        <h3 className={`font-bold ${classes.title} mb-2 text-gray-900 line-clamp-1`}>
           {product.name}
         </h3>
         {/* Sizes */}
@@ -127,15 +158,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
         {/* Price */}
-        <div className="flex items-baseline gap-3">
-          <span className="text-2xl font-bold text-gray-900">{displayPrice.toFixed(2)} DNT</span>
+        <div className={`flex items-baseline ${classes.priceGap}`}>
+          <span className={`${classes.priceMain} font-bold text-gray-900`}>{displayPrice.toFixed(2)} DNT</span>
           {hasDiscount && (
-            <span className="text-sm text-gray-400 line-through">{product.price.toFixed(2)} DNT</span>
+            <span className={`${classes.priceStrike} text-gray-400 line-through`}>{product.price.toFixed(2)} DNT</span>
           )}
         </div>
         {/* View Details Button */}
-        <div className="w-full flex justify-center mt-6">
-          <button className="px-20 py-4 font-semibold border-2 border-gray-600 text-black bg-white transition-all duration-300 hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105">
+        <div className={`w-full flex justify-center ${classes.buttonMargin}`}>
+          <button className={`${classes.buttonWidth} ${classes.buttonPadding} ${classes.buttonText} font-semibold border-2 border-gray-600 text-black bg-white transition-all duration-300 hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105`}>
             {t('common.viewDetails')}
           </button>
         </div>

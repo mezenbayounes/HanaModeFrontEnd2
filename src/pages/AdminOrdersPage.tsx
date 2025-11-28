@@ -377,8 +377,7 @@ const AdminOrdersPage: React.FC = () => {
 										<ul className="space-y-3">
 											{order.items.map((item, idx) => {
 												const productData = typeof item.product === 'object' ? item.product : null;
-												const productName = productData ? productData.name : item.product;
-												const productImage = productData?.images?.[0];
+const productName = productData?.name || item?.product || "Unnamed product";												const productImage = productData?.images?.[0];
 												
 												// Get color code - either from order item or look it up from product colors
 												const colorName = item.colorName || item.color;
@@ -387,7 +386,7 @@ const AdminOrdersPage: React.FC = () => {
 												// If no colorCode in order but we have productData and a color name, look it up
 												if (!colorCode && colorName && productData && productData.colors) {
 													const matchingColor = productData.colors.find(
-														(c) => c.name.toLowerCase() === colorName.toLowerCase()
+														(c) => c && c.name && c.name.toLowerCase() === colorName.toLowerCase()
 													);
 													if (matchingColor) {
 														colorCode = matchingColor.code;

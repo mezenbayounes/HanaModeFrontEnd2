@@ -62,8 +62,8 @@ export default function Header() {
               className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90"
             />
             <span className="text-2xl sm:text-3xl font-serif italic tracking-wider">
-              <span className="text-gray-900 group-hover:text-gray-700 transition-colors">Hana</span>
-              <span className="text-red-600 group-hover:text-red-500 transition-colors">Mori</span>
+              <span className="text-gray-900 group-hover:text-gray-700 transition-colors">Hana</span> {''}
+              <span className="text-red-600 group-hover:text-red-500 transition-colors">Mode</span>
             </span>
           </Link>
 

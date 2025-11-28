@@ -78,8 +78,7 @@ export default function ContactPage() {
                 <Mail className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-bold text-lg mb-2">{t('contact.emailUs')}</h3>
-              <p className="text-gray-600">info@jeansboutique.com</p>
-              <p className="text-gray-600">support@jeansboutique.com</p>
+              <p className="text-gray-600">contact@hanamode.tn</p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-md">
@@ -87,8 +86,8 @@ export default function ContactPage() {
                 <Phone className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-bold text-lg mb-2">{t('contact.callUs')}</h3>
-              <p className="text-gray-600">+1 (555) 123-4567</p>
-              <p className="text-gray-600">Mon-Fri: 9AM - 6PM</p>
+              <p className="text-gray-600">+216 25 524 828</p>
+              <p className="text-gray-600 whitespace-pre-line">{t('contact.hours')}</p>
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-md">
@@ -96,8 +95,25 @@ export default function ContactPage() {
                 <MapPin className="w-6 h-6 text-white" />
               </div>
               <h3 className="font-bold text-lg mb-2">{t('contact.visitUs')}</h3>
-              <p className="text-gray-600">123 Fashion Street</p>
-              <p className="text-gray-600">New York, NY 10001</p>
+              <p className="text-gray-600">13 Rue de la kasabah</p>
+              <p className="text-gray-600">Bab Bhar, Tunis</p>
+            </div>
+
+            {/* Mini Map */}
+            <div className="bg-white rounded-2xl p-6 shadow-md">
+              <h3 className="font-bold text-lg mb-4">{t('contact.ourLocation', 'Our Location')}</h3>
+              <div className="rounded-lg overflow-hidden border-2 border-gray-200 shadow-sm">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3192.497!2d10.174758!3d36.799362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzbCsDQ3JzU3LjciTiAxMMKwMTAnMjkuMSJF!5e0!3m2!1sen!2stn!4v1234567890"
+                  width="100%"
+                  height="250"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="HanaMode Location"
+                ></iframe>
+              </div>
             </div>
           </div>
 
