@@ -184,12 +184,12 @@ export default function ProductDetailsAdminPage() {
                         type="button"
                         disabled={isDisabled}
                         onClick={() => !isDisabled && setSelectedSize(s.size)}
-                        className={`relative px-6 py-3 rounded-xl font-medium transition-all border ${
+                        className={`px-6 py-3 font-semibold border-2 transition-all duration-300 ${
                           isDisabled
-                            ? 'bg-gray-100 text-gray-400 border-dashed cursor-not-allowed'
+                            ? 'bg-gray-100 text-gray-400 border-gray-300 cursor-not-allowed opacity-50'
                             : isSelected
-                              ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-md border-transparent'
-                              : 'bg-white text-gray-700 hover:bg-gray-50 border-gray-200'
+                              ? 'bg-black text-white border-black shadow-xl'
+                              : 'bg-white text-black border-gray-600 hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105'
                         }`}
                       >
                         {s.size}

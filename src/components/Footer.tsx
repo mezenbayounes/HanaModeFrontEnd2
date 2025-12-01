@@ -9,7 +9,7 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-white font-hana">
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 justify-items-start md:justify-items-center w-full">
           {/* Brand */}
           <div>
             {/* Logo */}

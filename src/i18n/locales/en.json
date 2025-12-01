@@ -395,7 +395,12 @@
     "favorites": "Favorites",
     "item": "item",
     "items": "items",
-    "startAddingFavorites": "Start adding products to your favorites to see them here!"
+    "startAddingFavorites": "Start adding products to your favorites to see them here!",
+    "loginRequired": "Please log in to add favorites",
+    "loginRequiredTitle": "Login Required",
+    "loginRequiredMessage": "You need to be logged in to add items to your favorites.",
+    "goToLogin": "Go to Login",
+    "cancel": "Cancel"
   },
   "orders": {
     "adminTitle": "All Orders",

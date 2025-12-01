@@ -15,22 +15,40 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!userDropdownOpen) return;
     function handleClickOutside(event: MouseEvent) {
+      // Close User Dropdown if clicked outside
       if (
+        userDropdownOpen &&
         userDropdownRef.current &&
         !userDropdownRef.current.contains(event.target as Node)
       ) {
         setUserDropdownOpen(false);
       }
+
+      // Close Mobile Menu if clicked outside
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        // Don't close if clicking the toggle button itself (handled by its own onClick)
+        !(event.target as Element).closest('button[aria-label="Toggle menu"]')
+      ) {
+        setMobileMenuOpen(false);
+      }
     }
-    document.addEventListener('mousedown', handleClickOutside);
+
+    if (userDropdownOpen || mobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [userDropdownOpen]);
+  }, [userDropdownOpen, mobileMenuOpen]);
+
   const items = useCartStore(state => state.items);
   const cartCount = items.reduce((sum, item) => sum + item.quantity, 0);
   const { user, isAuthenticated, logout } = useAuth();
@@ -62,8 +80,8 @@ export default function Header() {
               className="h-12 w-auto object-contain transition-opacity group-hover:opacity-90"
             />
             <span className="text-2xl sm:text-3xl font-serif italic tracking-wider">
-              <span className="text-gray-900 group-hover:text-gray-700 transition-colors">Hana</span> {''}
-              <span className="text-red-600 group-hover:text-red-500 transition-colors">Mode</span>
+              <span className="text-gray-900 group-hover:text-gray-700 transition-colors">HANA</span> {''}
+              <span className="text-red-600 group-hover:text-red-500 transition-colors">MODE</span>
             </span>
           </Link>
 
@@ -94,8 +112,8 @@ export default function Header() {
               <LanguageSwitcher />
             </div>
 
-            {/* User Account Dropdown */}
-            <div className="relative" ref={userDropdownRef}>
+            {/* User Account Dropdown - Hidden on mobile, visible on desktop */}
+            <div className="relative hidden lg:block" ref={userDropdownRef}>
               <button
                 onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                 className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-300 group"
@@ -196,6 +214,7 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         <div
+          ref={mobileMenuRef}
           className={`lg:hidden transition-all duration-300 ease-in-out overflow-hidden ${
             mobileMenuOpen ? 'max-h-screen opacity-100 py-4' : 'max-h-0 opacity-0'
           }`}

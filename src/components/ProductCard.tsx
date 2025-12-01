@@ -3,18 +3,22 @@ import { ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '../types/Product';
 import { useTranslation } from 'react-i18next';
 import { useFavorites } from '../context/FavoritesContext';
+import { useAuth } from '../context/AuthContext';
 import React, { useState } from 'react';
 import { API_URL } from '../config';
+import LoginRequiredModal from './LoginRequiredModal';
 
 interface ProductCardProps {
   product: Product;
-  size?: 'small' | 'default';
+  size?: 'small' | 'default' | 'home';
 }
 
 export default function ProductCard({ product, size = 'default' }: ProductCardProps) {
   const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { isAuthenticated } = useAuth();
 
   const hasDiscount = !!product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price;
   const displayPrice = (product.discountPrice && product.discountPrice > 0) ? product.discountPrice : product.price;
@@ -26,7 +30,15 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
   const hoverImage = product.images[1] || product.images[0]; // fallback if no second image
 
   const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+    
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
+    
     if (isFavorite(product.id)) {
       removeFromFavorites(product.id);
     } else {
@@ -40,6 +52,9 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       card: 'w-40',
       padding: 'p-2',
       title: 'text-sm',
+      category: 'text-xs',
+      sizes: 'text-xs',
+      colors: 'text-xs',
       priceMain: 'text-base',
       priceStrike: 'text-xs',
       priceGap: 'gap-1',
@@ -52,6 +67,9 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       card: 'w-80',
       padding: 'p-4',
       title: 'text-lg',
+      category: 'text-xs',
+      sizes: 'text-xs',
+      colors: 'text-xs',
       priceMain: 'text-2xl',
       priceStrike: 'text-sm',
       priceGap: 'gap-3',
@@ -59,12 +77,28 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       buttonText: '',
       buttonMargin: 'mt-6',
       buttonWidth: 'w-auto'
+    },
+    home: {
+      card: 'w-65',
+      padding: 'p-4',
+      title: 'text-xl',
+      category: 'text-sm',
+      sizes: 'text-sm',
+      colors: 'text-sm',
+      priceMain: 'text-2xl',
+      priceStrike: 'text-sm',
+      priceGap: 'gap-2',
+      buttonPadding: 'px-16 py-3',
+      buttonText: 'text-lg',
+      buttonMargin: 'mt-4',
+      buttonWidth: 'w-80'
     }
   };
 
   const classes = sizeClasses[size];
 
   return (
+    <>
     <Link
       to={`/product/${product.id}`}
       className={`group bg-white rounded-l overflow-hidden shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 ${classes.card}`}
@@ -72,42 +106,57 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
-        {/* Main Image */}
-        <img
-          src={`${API_URL}${mainImage}`}
-          alt={product.name}
-          className={`w-full h-full object-cover transition-opacity duration-500 ${
-            hovered ? 'opacity-0' : 'opacity-100'
-          }`}
-        />
-        {/* Hover Image */}
-        <img
-          src={`${API_URL}${hoverImage}`}
-          alt={product.name}
-          className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ${
-            hovered ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+      <div className="relative aspect-[4/5] overflow-hidden bg-gray-100 group/image">
+        {/* Scrollable Images */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide h-full w-full">
+          {product.images.map((img, index) => (
+            <img
+              key={index}
+              src={`${API_URL}${img}`}
+              alt={`${product.name} - View ${index + 1}`}
+              className="w-full h-full object-cover flex-shrink-0 snap-center"
+            />
+          ))}
+        </div>
+
+        {/* Navigation Dots (only if more than 1 image) */}
+        {product.images.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1.5 z-10 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
+            {product.images.map((_, index) => (
+              <div 
+                key={index}
+                className="w-1.5 h-1.5 rounded-full bg-white/80 shadow-sm backdrop-blur-sm"
+              />
+            ))}
+          </div>
+        )}
+
         {/* Discount Badge */}
         {hasDiscount && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 text-sm font-bold rounded">
+          <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 text-sm font-bold rounded z-10">
             -{discountPercent}%
           </div>
         )}
-        {/* Action Buttons */}
-        <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        {/* Favorite Button - Always Visible */}
+        <button
+          className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-all hover:scale-110 z-10"
+          onClick={handleFavorite}
+        >
+          <Heart 
+            className={`w-5 h-5 transition-colors ${
+              isFavorite(product.id) 
+                ? 'fill-red-500 text-red-500' 
+                : 'text-gray-600'
+            }`} 
+          />
+        </button>
+        {/* Add to Cart Button - Visible on Hover */}
+        <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button
             className="bg-white text-gray-900 p-2 rounded-l shadow-lg hover:bg-gray-100 transition-colors"
             onClick={(e) => { e.stopPropagation(); /* add to cart logic placeholder */ }}
           >
             <ShoppingCart className="w-5 h-5" />
-          </button>
-          <button
-            className="bg-white text-gray-900 p-2 rounded-l shadow-lg hover:bg-gray-100 transition-colors"
-            onClick={handleFavorite}
-          >
-            <Heart className={isFavorite(product.id) ? 'w-5 h-5 text-red-600' : 'w-5 h-5 text-gray-600'} />
           </button>
         </div>
       </div>
@@ -115,7 +164,7 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       {/* Product Info */}
       <div className={classes.padding}>
         {/* Category */}
-        <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">
+        <div className={`${classes.category} text-gray-500 uppercase tracking-wider mb-1`}>
           {product.category.replace('-', ' ')}
         </div>
         {/* Name */}
@@ -124,13 +173,13 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
         </h3>
         {/* Sizes */}
         {product.sizes && product.sizes.length > 0 && (
-          <div className="text-xs text-gray-500 mb-1">
+          <div className={`${classes.sizes} text-gray-500 mb-1`}>
             <span className="font-semibold">{t('product.sizes')} : </span>
             {product.sizes.map((s) => (s as any).size || s).join(', ')}
           </div>
         )}
         {/* Colors */}
-        <div className="flex flex-wrap items-center gap-1 text-xs mb-2 min-h-[1rem]">
+        <div className={`flex flex-wrap items-center gap-1 ${classes.colors} mb-2 min-h-[1rem]`}>
           <span className={`font-semibold mr-1 ${
             product.sizes && product.sizes.some((s) => (s as any).colors && (s as any).colors.length > 0)
               ? 'text-gray-500'
@@ -172,5 +221,12 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
         </div>
       </div>
     </Link>
+    
+    {/* Login Required Modal */}
+    <LoginRequiredModal 
+      isOpen={showLoginModal}
+      onClose={() => setShowLoginModal(false)}
+    />
+    </>
   );
 }

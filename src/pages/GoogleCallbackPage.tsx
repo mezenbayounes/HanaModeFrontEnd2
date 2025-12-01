@@ -9,33 +9,42 @@ export default function GoogleCallbackPage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const userParam = searchParams.get('user');
+    const processLogin = async () => {
+      const token = searchParams.get('token');
+      const userParam = searchParams.get('user');
 
-    console.log('Google Callback Params:', { token, userParam });
+      console.log('Google Callback Params:', { token, userParam });
 
-    if (token && userParam) {
-      try {
-        // Decode Base64
-        const jsonString = atob(userParam);
-        console.log('Decoded JSON:', jsonString);
-        
-        const user = JSON.parse(jsonString);
-        console.log('Parsed User:', user);
-        
-        login(token, user);
-        
-        console.log('Login successful, redirecting...');
-        // Use hard redirect to ensure clean state
-        window.location.href = '/';
-      } catch (error: any) {
-        console.error('Failed to parse user data:', error);
-        setErrorMsg(`Error: ${error.message}`);
+      if (token && userParam) {
+        try {
+          // Decode Base64
+          const jsonString = atob(userParam);
+          console.log('Decoded JSON:', jsonString);
+          
+          const user = JSON.parse(jsonString);
+          console.log('Parsed User:', user);
+          
+          // Await login if it's async, or just call it
+          await login(token, user);
+          
+          console.log('Login successful, redirecting...');
+          
+          // Small delay to ensure state is updated
+          setTimeout(() => {
+            navigate('/', { replace: true });
+          }, 100);
+          
+        } catch (error: any) {
+          console.error('Failed to parse user data:', error);
+          setErrorMsg(`Error: ${error.message}`);
+        }
+      } else {
+          console.error('Missing token or user param');
+          setErrorMsg('Missing token or user param');
       }
-    } else {
-        console.error('Missing token or user param');
-        setErrorMsg('Missing token or user param');
-    }
+    };
+
+    processLogin();
   }, [searchParams, login, navigate]);
 
   if (errorMsg) {

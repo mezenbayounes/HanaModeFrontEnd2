@@ -142,9 +142,9 @@ export default function ProductDetailPage() {
             {/* Discount Badge */}
             <div className="absolute top-5 left-1 flex flex-col gap-2 z-10">
               {discountPercent > 0 && (
-                <span className="bg-white border-2 border-red-500 text-red-500 w-40 h-6 flex items-center justify-center font-bold text-sm">
-                  {t('product.save')} {discountPercent}%
-                </span>
+                <div className="bg-red-500 text-white px-3 py-1 text-sm font-bold rounded">
+                  -{discountPercent}%
+                </div>
               )}
             </div>
 

@@ -59,57 +59,67 @@ export default function CheckoutPage() {
     return Object.keys(newErrors).length === 0;
   };
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { isAuthenticated } = useAuth();
 
-  // Prevent double submission
-  if (isSubmitting) return;
+  const handlePlaceOrderClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
 
-  if (!validate()) return;
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+    } else {
+      processOrder();
+    }
+  };
 
-  setIsSubmitting(true); // Disable button
+  const processOrder = async () => {
+    // Prevent double submission
+    if (isSubmitting) return;
 
-  try {
-    const order = {
-      id: `ORD-${Date.now()}`,
-      items: [...items],
-      customerDetails: { ...formData },
-      total,
-      orderDate: new Date(),
-    };
+    setIsSubmitting(true); // Disable button
 
-    localStorage.setItem("lastOrder", JSON.stringify(order));
+    try {
+      const order = {
+        id: `ORD-${Date.now()}`,
+        items: [...items],
+        customerDetails: { ...formData },
+        total,
+        orderDate: new Date(),
+      };
 
-    const orderData = {
-      items: items.map((item) => ({
-        product: item.product.id,
-        quantity: item.quantity,
-        size: item.size,
-        colorName: item.color, // Send color name
-        colorCode: item.colorCode // Send color hex code
-      })),
-      customerDetails: formData,
-      total,
-    };
+      localStorage.setItem("lastOrder", JSON.stringify(order));
 
-    const savedOrder = await createOrder(orderData, token || undefined);
+      const orderData = {
+        items: items.map((item) => ({
+          product: item.product.id,
+          quantity: item.quantity,
+          size: item.size,
+          colorName: item.color, // Send color name
+          colorCode: item.colorCode // Send color hex code
+        })),
+        customerDetails: formData,
+        total,
+      };
 
-    // ✨ FIX: navigate AFTER render cycle
-    setTimeout(() => {
-      navigate("/order-confirmation", {
-        state: { order: savedOrder },
-      });
-    }, 0);
+      const savedOrder = await createOrder(orderData, token || undefined);
 
-    // Clear cart a bit later
-    setTimeout(() => clearCart(), 100);
+      // ✨ FIX: navigate AFTER render cycle
+      setTimeout(() => {
+        navigate("/order-confirmation", {
+          state: { order: savedOrder },
+        });
+      }, 0);
 
-  } catch (error) {
-    console.error("Order creation failed:", error);
-    alert(t('checkout.orderError'));
-    setIsSubmitting(false); // Re-enable button on error
-  }
-};
+      // Clear cart a bit later
+      setTimeout(() => clearCart(), 100);
+
+    } catch (error) {
+      console.error("Order creation failed:", error);
+      alert(t('checkout.orderError'));
+      setIsSubmitting(false); // Re-enable button on error
+    }
+  };
 
   const handleChange = (field: keyof OrderDetails) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -121,7 +131,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4 relative">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <button
@@ -137,7 +147,7 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Checkout Form */}
           <div className="lg:col-span-2">
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-md">
+            <form onSubmit={handlePlaceOrderClick} className="bg-white rounded-2xl p-8 shadow-md">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('checkout.customerDetails')}</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -319,6 +329,44 @@ export default function CheckoutPage() {
           </div>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 transform transition-all scale-100 animate-scale-in">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <ShoppingBag className="w-8 h-8 text-gray-900" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                {t('checkout.trackOrderTitle', 'Track Your Order')}
+              </h3>
+              <p className="text-gray-600">
+                {t('checkout.trackOrderMessage', 'Sign in to save this order to your history and track its status easily.')}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => navigate('/user-login', { state: { from: '/checkout' } })}
+                className="w-full py-3 px-4 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg"
+              >
+                {t('auth.signIn')}
+              </button>
+              
+              <button
+                onClick={() => {
+                  setShowAuthModal(false);
+                  processOrder();
+                }}
+                className="w-full py-3 px-4 bg-white text-gray-900 font-bold border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+              >
+                {t('checkout.continueGuest', 'Continue as Guest')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

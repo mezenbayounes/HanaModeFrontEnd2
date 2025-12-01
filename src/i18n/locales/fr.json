@@ -398,7 +398,12 @@
     "favorites": "Favoris",
     "item": "article",
     "items": "articles",
-    "startAddingFavorites": "Commencez à ajouter des produits à vos favoris pour les voir ici !"
+    "startAddingFavorites": "Commencez à ajouter des produits à vos favoris pour les voir ici !",
+    "loginRequired": "Veuillez vous connecter pour ajouter des favoris",
+    "loginRequiredTitle": "Connexion Requise",
+    "loginRequiredMessage": "Vous devez être connecté pour ajouter des articles à vos favoris.",
+    "goToLogin": "Se Connecter",
+    "cancel": "Annuler"
   },
   "orders": {
     "adminTitle": "Toutes les Commandes",
