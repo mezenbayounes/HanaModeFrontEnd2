@@ -450,9 +450,10 @@ const bestSellers = products.filter(p => p.bestSeller);
         </div>
       </section>
 
-      {/* Why Choose Us */}
+      {/* Why Choose Us 
+      
       <section className="py-24 px-4 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-50 relative overflow-hidden">
-        {/* Decorative elements */}
+        {/* Decorative elements 
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-gray-200/20 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gray-200/20 rounded-full blur-3xl"></div>
         
@@ -503,6 +504,7 @@ const bestSellers = products.filter(p => p.bestSeller);
           </div>
         </div>
       </section>
+      */}
     </div>
   );
 }

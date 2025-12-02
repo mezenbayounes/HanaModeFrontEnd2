@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Heart } from 'lucide-react';
 import { useFavorites } from '../context/FavoritesContext';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import LoginModal from './LoginModal';
 
 interface FavoriteButtonProps {
   productId: string;
@@ -13,8 +13,8 @@ interface FavoriteButtonProps {
 export default function FavoriteButton({ productId, className = '', size = 'md' }: FavoriteButtonProps) {
   const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const iconSizes = {
     sm: 'w-4 h-4',
@@ -27,8 +27,8 @@ export default function FavoriteButton({ productId, className = '', size = 'md' 
     e.stopPropagation();
 
     if (!isAuthenticated) {
-      // Redirect to login if not authenticated
-      navigate('/login');
+      // Show login modal if not authenticated
+      setShowLoginModal(true);
       return;
     }
 
@@ -36,10 +36,10 @@ export default function FavoriteButton({ productId, className = '', size = 'md' 
 
     try {
       setIsProcessing(true);
-      if (isFavorite(productId)) {
-        await removeFromFavorites(productId);
+      if (isFavorite(Number(productId))) {
+        await removeFromFavorites(Number(productId));
       } else {
-        await addToFavorites(productId);
+        await addToFavorites(Number(productId));
       }
     } catch (error) {
       console.error('Error toggling favorite:', error);
@@ -48,22 +48,31 @@ export default function FavoriteButton({ productId, className = '', size = 'md' 
     }
   };
 
-  const isFav = isFavorite(productId);
+  const isFav = isFavorite(Number(productId));
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={isProcessing}
-      className={`p-2 bg-white  hover:bg-red-50 transition-colors ${
-        isProcessing ? 'opacity-50 cursor-not-allowed' : ''
-      } ${className}`}
-      aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
-    >
-      <Heart
-        className={`${iconSizes[size]} ${
-          isFav ? 'text-red-500 fill-red-500' : 'text-gray-600'
-        } transition-colors`}
+    <>
+      <button
+        onClick={handleClick}
+        disabled={isProcessing}
+        className={`p-2 bg-white  hover:bg-red-50 transition-colors ${
+          isProcessing ? 'opacity-50 cursor-not-allowed' : ''
+        } ${className}`}
+        aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+      >
+        <Heart
+          className={`${iconSizes[size]} ${
+            isFav ? 'text-red-500 fill-red-500' : 'text-gray-600'
+          } transition-colors`}
+        />
+      </button>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onLoginSuccess={() => setShowLoginModal(false)}
       />
-    </button>
+    </>
   );
 }

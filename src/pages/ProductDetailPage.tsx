@@ -43,10 +43,19 @@ export default function ProductDetailPage() {
     if (id) fetchProduct();
   }, [id]);
 
-  // When size changes → reset selected color
+  // When size changes → auto-select first available color
   useEffect(() => {
-    setSelectedColor(null);
-  }, [selectedSize]);
+    if (product && selectedSize) {
+      const sizeObject = product.sizes.find(s => s.size === selectedSize);
+      const availableColors = sizeObject?.colors || [];
+      
+      if (availableColors.length > 0) {
+        setSelectedColor(availableColors[0].name);
+      } else {
+        setSelectedColor(null);
+      }
+    }
+  }, [selectedSize, product]);
 
   if (loading) {
     return (

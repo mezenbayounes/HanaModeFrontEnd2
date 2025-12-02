@@ -31,7 +31,13 @@ export default function GoogleCallbackPage() {
           
           // Small delay to ensure state is updated
           setTimeout(() => {
-            navigate('/', { replace: true });
+            const returnUrl = localStorage.getItem('authReturnUrl');
+            if (returnUrl) {
+              localStorage.removeItem('authReturnUrl');
+              navigate(returnUrl, { replace: true });
+            } else {
+              navigate('/', { replace: true });
+            }
           }, 100);
           
         } catch (error: any) {

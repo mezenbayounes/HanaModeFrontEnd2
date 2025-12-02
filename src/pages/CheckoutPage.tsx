@@ -8,12 +8,12 @@ import React from 'react';
 import { createOrder } from "../api/ordersApi"; 
 import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
+import LoginModal from '../components/LoginModal';
 
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { items, getTotal, clearCart } = useCartStore();
-  const { token } = useAuth(); // Get auth token
   const [formData, setFormData] = useState<OrderDetails>({
     firstName: '',
     lastName: '',
@@ -60,7 +60,8 @@ export default function CheckoutPage() {
   };
 
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { isAuthenticated, token } = useAuth();
 
   const handlePlaceOrderClick = (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,7 +103,11 @@ export default function CheckoutPage() {
         total,
       };
 
-      const savedOrder = await createOrder(orderData, token || undefined);
+      // Get token from state OR directly from localStorage to ensure we have the latest one
+      // immediately after login (React state updates might be slightly delayed)
+      const currentToken = token || localStorage.getItem('token');
+      
+      const savedOrder = await createOrder(orderData, currentToken || undefined);
 
       // ✨ FIX: navigate AFTER render cycle
       setTimeout(() => {
@@ -332,7 +337,7 @@ export default function CheckoutPage() {
 
       {/* Auth Modal */}
       {showAuthModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+        <div className="fixed inset-0 z-[9997] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 transform transition-all scale-100 animate-scale-in">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -348,8 +353,11 @@ export default function CheckoutPage() {
 
             <div className="space-y-3">
               <button
-                onClick={() => navigate('/user-login', { state: { from: '/checkout' } })}
-                className="w-full py-3 px-4 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg"
+                onClick={() => {
+                  setShowAuthModal(false);
+                  setShowLoginModal(true);
+                }}
+                className="w-full py-3 px-4 bg-black text-white font-bold  hover:bg-gray-800 transition-colors shadow-lg"
               >
                 {t('auth.signIn')}
               </button>
@@ -359,7 +367,7 @@ export default function CheckoutPage() {
                   setShowAuthModal(false);
                   processOrder();
                 }}
-                className="w-full py-3 px-4 bg-white text-gray-900 font-bold border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
+                className="w-full py-3 px-4 bg-white text-gray-900 font-bold border-2 border-gray-200  hover:bg-gray-50 transition-colors"
               >
                 {t('checkout.continueGuest', 'Continue as Guest')}
               </button>
@@ -367,6 +375,17 @@ export default function CheckoutPage() {
           </div>
         </div>
       )}
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        returnUrl="/checkout"
+        onLoginSuccess={() => {
+          setShowLoginModal(false);
+          processOrder();
+        }}
+      />
     </div>
   );
 }

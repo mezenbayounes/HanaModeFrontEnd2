@@ -1,11 +1,11 @@
 {
   "common": {
-    "home": "Accueil",
-    "shop": "Boutique",
-    "categories": "Catégories",
-    "contact": "Contact",
-    "cart": "Panier",
-    "loading": "Chargement...",
+    "home": "ACUEIL",
+    "shop": "BOUTIQUE",
+    "categories": "CATÉGORIES",
+    "contact": "CONTACT",
+    "cart": "PANIER",
+    "loading": "CHARGEMENT...",
     "error": "Erreur",
     "addToCart": "Ajouter au panier",
     "viewDetails": "Voir Détails",
@@ -47,9 +47,9 @@
   },
   "footer": {
     "description": "La mode femme haut de gamme, dans toutes les coupes et tous les styles",
-    "quickLinks": "Liens rapides",
+    "quickLinks": "LIENS RAPIDES",
     "styles": "Styles",
-    "contact": "Contact",
+    "contact": "CONTACT",
     "skinnyJeans": "Jeans Skinny",
     "straightJeans": "Jeans straight",
     "bootcutJeans": "Jeans Bootcut",
@@ -197,7 +197,10 @@
     "enterEmail": "Entrez votre email",
     "emailRequired": "L'email est obligatoire",
     "emailInvalid": "Adresse email invalide",
-    "processing": "Traitement en cours..."
+    "processing": "Traitement en cours...",
+     "trackOrderMessage": "Connectez-vous pour enregistrer cette commande dans votre historique et suivre facilement son statut.",
+  "trackOrderTitle": "Suivre votre commande",
+  "continueGuest": "Continuer en tant qu’invité"
   },
   "orderConfirmation": {
     "orderSummary": "Récapitulatif de la Commande",
@@ -386,7 +389,9 @@
     "newPassword": "Nouveau mot de passe",
     "confirmNewPassword": "Confirmer le nouveau mot de passe",
     "resetPasswordSuccess": "Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.",
-    "addNewAdmin": "Ajouter un nouvel administrateur"
+    "addNewAdmin": "Ajouter un nouvel administrateur",
+    "signInWithGoogle": "Se connecter avec Google",
+    "orContinueWith": "ou continuez avec"  
   },
   "favorites": {
     "title": "Mes Favoris",

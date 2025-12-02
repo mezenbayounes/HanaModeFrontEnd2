@@ -1,11 +1,11 @@
 {
   "common": {
-    "home": "Home",
-    "shop": "Shop",
-    "categories": "Categories",
-    "contact": "Contact",
-    "cart": "Cart",
-    "loading": "Loading...",
+    "home": "HOME",
+    "shop": "SHOP",
+    "categories": "CATEGORIES",
+    "contact": "CONTACT",
+    "cart": "CART",
+    "loading": "LOADING...",
     "error": "Error",
     "addToCart": "Add to Cart",
     "viewDetails": "View Details",
@@ -47,9 +47,9 @@
   },
   "footer": {
     "description": "Premium women's fashion, in all cuts and styles",
-    "quickLinks": "Quick Links",
+    "quickLinks": "QUICK LINKS",
     "styles": "Styles",
-    "contact": "Contact",
+    "contact": "CONTACT",
     "skinnyJeans": "Skinny Jeans",
     "straightJeans": "Straight Jeans",
     "bootcutJeans": "Bootcut Jeans",
@@ -164,6 +164,7 @@
     "cancel": "Cancel"
   },
   "checkout": {
+
     "title": "Checkout",
     "customerInfo": "Customer Information",
     "name": "Full Name",
@@ -197,7 +198,11 @@
     "enterEmail": "Enter your email",
     "emailRequired": "Email is required",
     "emailInvalid": "Invalid email address",
-    "processing": "Processing..."
+    "processing": "Processing...",
+        "trackOrderMessage":"Sign in to save this order to your history and track its status easily.",
+        "trackOrderTitle":"Track Your Order",
+        "continueGuest":"Continue as Guest"
+        
   },
   "orderConfirmation": {
     "orderSummary": "Order Summary",
@@ -383,7 +388,9 @@
     "newPassword": "New Password",
     "confirmNewPassword": "Confirm New Password",
     "resetPasswordSuccess": "Password reset successful. You can now log in.",
-    "addNewAdmin": "Add New Admin"
+    "addNewAdmin": "Add New Admin",
+    "signInWithGoogle": "Sign in with Google",
+    "orContinueWith": "Or continue with"
   },
   "favorites": {
     "title": "My Favorites",
