@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
@@ -12,10 +12,13 @@ interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLoginSuccess?: () => void;
+  onSwitchToRegister?: () => void; // To switch to register modal
+  onSwitchToForgotPassword?: () => void; // To switch to forgot password modal
+  onSwitchToVerifyEmail?: (email: string) => void; // To switch to verify email modal
   returnUrl?: string; // Optional URL to return to after login
 }
 
-export default function LoginModal({ isOpen, onClose, onLoginSuccess, returnUrl }: LoginModalProps) {
+export default function LoginModal({ isOpen, onClose, onLoginSuccess, onSwitchToRegister, onSwitchToForgotPassword, onSwitchToVerifyEmail, returnUrl }: LoginModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,6 +26,24 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, returnUrl 
   const { login } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const modalContentRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to top when error occurs
+  useEffect(() => {
+    if (error && modalContentRef.current) {
+      modalContentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [error]);
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!isOpen) {
+      setEmail('');
+      setPassword('');
+      setError('');
+      setIsLoading(false);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -65,8 +86,12 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, returnUrl 
       
     } catch (err: any) {
       if (err.response?.data?.requiresVerification) {
-        onClose();
-        navigate('/verify-email', { state: { email: err.response.data.email || email } });
+        if (onSwitchToVerifyEmail) {
+          onSwitchToVerifyEmail(err.response.data.email || email);
+        } else {
+          onClose();
+          navigate('/verify-email', { state: { email: err.response.data.email || email } });
+        }
       } else {
         setError(err.response?.data?.message || t('auth.loginFailed'));
       }
@@ -96,7 +121,10 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, returnUrl 
         />
         
         {/* Modal */}
-        <div className="relative bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-scale-in">
+        <div 
+          ref={modalContentRef}
+          className="relative bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-scale-in max-h-[90vh] overflow-y-auto"
+        >
           {/* Close button */}
           <button
             onClick={onClose}
@@ -220,23 +248,45 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess, returnUrl 
                 <div>
                   <span className="text-sm text-gray-600">
                     {t('auth.dontHaveAccount')}{' '}
-                    <Link 
-                      to="/register" 
-                      className="font-medium text-black hover:text-gray-800"
-                      onClick={onClose}
-                    >
-                      {t('auth.signUp')}
-                    </Link>
+                    {onSwitchToRegister ? (
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          onSwitchToRegister();
+                        }}
+                        className="font-medium text-black hover:text-gray-800"
+                      >
+                        {t('auth.signUp')}
+                      </button>
+                    ) : (
+                      <Link 
+                        to="/register" 
+                        className="font-medium text-black hover:text-gray-800"
+                        onClick={onClose}
+                      >
+                        {t('auth.signUp')}
+                      </Link>
+                    )}
                   </span>
                 </div>
                 <div>
-                  <Link 
-                    to="/forgot-password" 
-                    className="text-sm text-gray-700 hover:underline"
-                    onClick={onClose}
-                  >
-                    {t('auth.forgotPassword')}
-                  </Link>
+                  {onSwitchToForgotPassword ? (
+                    <button 
+                      type="button"
+                      onClick={onSwitchToForgotPassword}
+                      className="text-sm text-gray-700 hover:underline"
+                    >
+                      {t('auth.forgotPassword')}
+                    </button>
+                  ) : (
+                    <Link 
+                      to="/forgot-password" 
+                      className="text-sm text-gray-700 hover:underline"
+                      onClick={onClose}
+                    >
+                      {t('auth.forgotPassword')}
+                    </Link>
+                  )}
                 </div>
               </div>
             </form>

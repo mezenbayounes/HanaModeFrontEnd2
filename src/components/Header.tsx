@@ -8,6 +8,11 @@ import { createPortal } from 'react-dom';
 import hanaLogo from '../assets/hanaModeLogo.png';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '../context/AuthContext';
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
+import ForgotPasswordModal from './ForgotPasswordModal';
+import ResetPasswordModal from './ResetPasswordModal';
+import VerifyEmailModal from './VerifyEmailModal';
 
 export default function Header() {
   const { t } = useTranslation();
@@ -15,6 +20,13 @@ export default function Header() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [registerModalOpen, setRegisterModalOpen] = useState(false);
+  const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false);
+  const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState(false);
+  const [verifyEmailModalOpen, setVerifyEmailModalOpen] = useState(false);
+  const [verifyEmail, setVerifyEmail] = useState(''); // Email for verification
+  const [resetEmail, setResetEmail] = useState(''); // Email for password reset
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -67,6 +79,68 @@ export default function Header() {
     logout();
     setUserDropdownOpen(false);
     navigate('/');
+  };
+
+  const handleOpenLoginModal = () => {
+    setUserDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setRegisterModalOpen(false);
+    setForgotPasswordModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setLoginModalOpen(true);
+  };
+
+  const handleOpenRegisterModal = () => {
+    setUserDropdownOpen(false);
+    setMobileMenuOpen(false);
+    setLoginModalOpen(false);
+    setForgotPasswordModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setRegisterModalOpen(true);
+  };
+
+  const handleSwitchToRegister = () => {
+    setLoginModalOpen(false);
+    setForgotPasswordModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setRegisterModalOpen(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setRegisterModalOpen(false);
+    setForgotPasswordModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setLoginModalOpen(true);
+  };
+
+  const handleSwitchToForgotPassword = () => {
+    setLoginModalOpen(false);
+    setRegisterModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setForgotPasswordModalOpen(true);
+  };
+
+  const handleSwitchToReset = (email: string) => {
+    setResetEmail(email);
+    setForgotPasswordModalOpen(false);
+    setLoginModalOpen(false);
+    setRegisterModalOpen(false);
+    setVerifyEmailModalOpen(false);
+    setResetPasswordModalOpen(true);
+  };
+
+  const handleOpenVerifyEmail = (email: string) => {
+    setVerifyEmail(email);
+    setLoginModalOpen(false);
+    setRegisterModalOpen(false);
+    setForgotPasswordModalOpen(false);
+    setResetPasswordModalOpen(false);
+    setVerifyEmailModalOpen(true);
   };
 
   return (
@@ -202,30 +276,28 @@ export default function Header() {
                   ) : (
                     <>
                       {/* Login */}
-                      <Link
-                        to="/user-login"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-black transition-colors group"
+                      <button
+                        onClick={handleOpenLoginModal}
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-black transition-colors group w-full text-left"
                       >
                         <User className="w-5 h-5 group-hover:text-black" />
                         <span className="text-sm font-medium uppercase relative">
                           {t('auth.signIn')}
                           <span className="absolute bottom-0 left-0 w-full h-px bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                         </span>
-                      </Link>
+                      </button>
 
                       {/* Register */}
-                      <Link
-                        to="/register"
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-black transition-colors group"
+                      <button
+                        onClick={handleOpenRegisterModal}
+                        className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:text-black transition-colors group w-full text-left"
                       >
                         <User className="w-5 h-5 group-hover:text-black" />
                         <span className="text-sm font-medium uppercase relative">
                           {t('auth.register')}
                           <span className="absolute bottom-0 left-0 w-full h-px bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                         </span>
-                      </Link>
+                      </button>
                     </>
                   )}
                 </div>
@@ -357,28 +429,26 @@ export default function Header() {
                       </>
                     ) : (
                       <>
-                        <Link
-                          to="/user-login"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-black group"
+                        <button
+                          onClick={handleOpenLoginModal}
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-black group w-full text-left"
                         >
                           <User className="w-5 h-5" />
                           <span className="uppercase text-sm font-medium relative">
                             {t('auth.signIn')}
                             <span className="absolute bottom-0 left-0 w-full h-px bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                           </span>
-                        </Link>
-                        <Link
-                          to="/register"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-black group"
+                        </button>
+                        <button
+                          onClick={handleOpenRegisterModal}
+                          className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:text-black group w-full text-left"
                         >
                           <User className="w-5 h-5" />
                           <span className="uppercase text-sm font-medium relative">
                             {t('auth.register')}
                             <span className="absolute bottom-0 left-0 w-full h-px bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                           </span>
-                        </Link>
+                        </button>
                       </>
                     )}
                   </div>
@@ -389,6 +459,46 @@ export default function Header() {
           document.body
         )}
       </div>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        onSwitchToRegister={handleSwitchToRegister}
+        onSwitchToForgotPassword={handleSwitchToForgotPassword}
+        onSwitchToVerifyEmail={handleOpenVerifyEmail}
+      />
+
+      {/* Register Modal */}
+      <RegisterModal 
+        isOpen={registerModalOpen}
+        onClose={() => setRegisterModalOpen(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+        onSwitchToVerifyEmail={handleOpenVerifyEmail}
+      />
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal 
+        isOpen={forgotPasswordModalOpen}
+        onClose={() => setForgotPasswordModalOpen(false)}
+        onSwitchToReset={handleSwitchToReset}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
+
+      {/* Reset Password Modal */}
+      <ResetPasswordModal 
+        isOpen={resetPasswordModalOpen}
+        onClose={() => setResetPasswordModalOpen(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+        initialEmail={resetEmail}
+      />
+
+      {/* Verify Email Modal */}
+      <VerifyEmailModal 
+        isOpen={verifyEmailModalOpen}
+        onClose={() => setVerifyEmailModalOpen(false)}
+        email={verifyEmail}
+      />
     </header>
   );
 }

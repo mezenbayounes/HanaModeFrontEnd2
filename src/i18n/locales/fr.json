@@ -198,9 +198,9 @@
     "emailRequired": "L'email est obligatoire",
     "emailInvalid": "Adresse email invalide",
     "processing": "Traitement en cours...",
-     "trackOrderMessage": "Connectez-vous pour enregistrer cette commande dans votre historique et suivre facilement son statut.",
-  "trackOrderTitle": "Suivre votre commande",
-  "continueGuest": "Continuer en tant qu’invité"
+    "trackOrderMessage": "Connectez-vous pour enregistrer cette commande dans votre historique et suivre facilement son statut.",
+    "trackOrderTitle": "Suivre votre commande",
+    "continueGuest": "Continuer en tant qu’invité"
   },
   "orderConfirmation": {
     "orderSummary": "Récapitulatif de la Commande",
@@ -391,7 +391,20 @@
     "resetPasswordSuccess": "Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.",
     "addNewAdmin": "Ajouter un nouvel administrateur",
     "signInWithGoogle": "Se connecter avec Google",
-    "orContinueWith": "ou continuez avec"  
+    "orContinueWith": "ou continuez avec",
+    "sendOTP": "Envoyer le code OTP",
+    "backToLogin": "Retour à la connexion",
+    "verifyYourEmail": "Vérifiez votre email",
+    "verificationCodeSentTo": "Nous avons envoyé un code de vérification à",
+    "verificationCode": "Code de vérification",
+    "verifying": "Vérification en cours...",
+    "verifyEmail": "Vérifier l'email",
+    "resendCode": "Renvoyer le code",
+    "enterOTPAndNewPassword": "Entrez le code OTP envoyé à votre email et votre nouveau mot de passe",
+    "somethingWentWrong": "Quelque chose s'est mal passé",
+    "verificationFailed": "Échec de la vérification",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe"
   },
   "favorites": {
     "title": "Mes Favoris",
