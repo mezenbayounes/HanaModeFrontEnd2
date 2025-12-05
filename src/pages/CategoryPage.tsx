@@ -1,16 +1,18 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
-  ArrowLeft,
-  Sparkles
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { Product } from '../types/Product';
-import ProductCard from '../components/ProductCard';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { getProductsByCategory } from '../api/productsApi';
 import ProductFilter, { SortOption, ViewMode } from '../components/ProductFilter';
+import BestSellerCard from '../components/BestSellerCard';
 import ProductListItem from '../components/ProductListItem';
+
+const ITEMS_PER_PAGE = 9;
 
 export default function CategoryPage() {
   const { t } = useTranslation();
@@ -24,10 +26,9 @@ export default function CategoryPage() {
   const [onlyInStock, setOnlyInStock] = useState(false);
   const [onlyDiscounted, setOnlyDiscounted] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
-
-
 
   const toSlug = (value: string) =>
     value
@@ -62,6 +63,11 @@ export default function CategoryPage() {
 
     fetchData();
   }, [category, t]);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [onlyInStock, onlyDiscounted, searchTerm, sortOption]);
 
   const processedProducts = useMemo(() => {
     let result = [...products];
@@ -114,6 +120,13 @@ export default function CategoryPage() {
     return result;
   }, [products, onlyInStock, onlyDiscounted, searchTerm, sortOption]);
 
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return processedProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [processedProducts, currentPage]);
+
+  const totalPages = Math.ceil(processedProducts.length / ITEMS_PER_PAGE);
+
   const priceStats = useMemo(() => {
     if (products.length === 0) return null;
     const prices = products.map(product => product.discountPrice ?? product.price);
@@ -122,6 +135,11 @@ export default function CategoryPage() {
       max: Math.max(...prices).toFixed(2)
     };
   }, [products]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) {
     return (
@@ -162,73 +180,37 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-hana">
-      <div className={`bg-gradient-to-r ${categoryColor} py-16 px-4`}>
-        <div className="max-w-7xl mx-auto space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4 text-white">
-            <button
-              onClick={() => navigate(-1)}
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              {t('category.back')}
-            </button>
-            <div className="flex items-center gap-3 bg-white/10 backdrop-blur rounded-full px-4 py-2 text-sm">
-              <Sparkles className="w-4 h-4" />
-              <span>{t('category.curatedLooks', 'Looks sélectionnés pour vous')}</span>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <p className="text-white/80 uppercase tracking-[0.3em] text-sm">
-              {t('category.curated', 'Collection exclusive')}
-            </p>
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
-              {categoryName || category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-            </h1>
-            <p className="text-white/90 text-lg max-w-2xl">
-              {t(
-                'category.heroSubtitle',
-                'Découvrez notre sélection soigneusement élaborée pour mettre en valeur votre silhouette avec des pièces iconiques.'
-              )}
-            </p>
-          </div>
-
-
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            
-            <div className="bg-white/15 backdrop-blur px-5 py-4 text-white">
-              <p className="text-sm text-white/70">{t('category.stylesAvailable')}</p>
-              <p className="text-2xl font-bold">{products.length}</p>
-            </div>
-            {/* in stock 
-            <div className="bg-white/15 backdrop-blur rounded-2xl px-5 py-4 text-white">
-              <p className="text-sm text-white/70">{t('category.inStock')}</p>
-              <p className="text-2xl font-bold">
-                {products.filter(product => product.inStock).length}
-              </p>
-            </div>
-            */}
-            {/* best deals 
-            <div className="bg-white/15 backdrop-blur  px-5 py-4 text-white">
-              <p className="text-sm text-white/70">{t('category.bestDeals',)}</p>
-              <p className="text-2xl font-bold">
-                {products.filter(product => product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price).length}
-              </p>
-            </div>
-            */}
-            <div className="bg-white/15 backdrop-blur  px-5 py-4 text-white">
-              <p className="text-sm text-white/70">{t('category.priceRange')}</p>
-              <p className="text-xl font-semibold">
-                {priceStats ? `${priceStats.min} - ${priceStats.max} DNT` : '—'}
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-hana px-4">
+      {/* Category Title - Centered */}
+      <div className="text-center py-6">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 uppercase">
+          {categoryName || category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+        </h1>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-12 space-y-8">
+      {/* Breadcrumb Navigation - Above Filter */}
+      <nav className="flex items-center gap-1 text-sm mb-4 max-w-7xl mx-auto">
+        <Link 
+          to="/" 
+          className="text-gray-600 hover:text-gray-900 transition-colors uppercase"
+        >
+          {t('breadcrumb.home', 'Accueil')}
+        </Link>
+        <span className="text-gray-400">›</span>
+        <Link 
+          to="/categories" 
+          className="text-gray-600 hover:text-gray-900 transition-colors uppercase"
+        >
+          {t('breadcrumb.categories', 'Categories')}
+        </Link>
+        <span className="text-gray-400">›</span>
+        <span className="text-gray-900 font-medium uppercase">
+          {categoryName || category?.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+        </span>
+      </nav>
+
+      {/* FILTER PANEL - Top Center (Using ProductFilter for now) */}
+      <div className="max-w-7xl mx-auto mb-8">
         <ProductFilter
           onlyInStock={onlyInStock}
           setOnlyInStock={setOnlyInStock}
@@ -247,32 +229,79 @@ export default function CategoryPage() {
             setSearchTerm('');
           }}
         />
+      </div>
+
+      {/* PRODUCTS SECTION - Full Width */}
+      <div className="max-w-7xl mx-auto">
 
         {processedProducts.length > 0 ? (
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 justify-items-center' : 'space-y-6'}>
-            {processedProducts.map(product =>
-              viewMode === 'grid' ? (
-                <ProductCard key={product.id} product={product} />
-              ) : (
-                <ProductListItem
-                  key={product.id}
-                  product={product}
-                  onClick={() => navigate(`/product/${product.id}`)}
-                  actions={
+          <>
+            <div className={viewMode === 'grid' ? 'flex justify-center w-full' : ''}>
+              <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center' : 'space-y-6'}>
+              {paginatedProducts.map(product =>
+                viewMode === 'grid' ? (
+               <BestSellerCard key={product.id} product={product} />
+                ) : (
+                  <ProductListItem
+                    key={product.id}
+                    product={product}
+                    onClick={() => navigate(`/product/${product.id}`)}
+                    actions={
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/product/${product.id}`);
+                        }}
+                        className="px-6 py-3  bg-gray-900 text-white font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                      >
+                        {t('common.viewDetails')}
+                      </button>
+                    }
+                  />
+                )
+              )}
+              </div>
+            </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-12">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Previous page"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                <div className="flex gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/product/${product.id}`);
-                      }}
-                      className="px-6 py-3  bg-gray-900 text-white font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                      key={page}
+                      onClick={() => handlePageChange(page)}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-medium transition-colors ${
+                        currentPage === page
+                          ? 'bg-black text-white'
+                          : 'border border-gray-200 hover:bg-gray-50 text-gray-700'
+                      }`}
                     >
-                      {t('common.viewDetails')}
+                      {page}
                     </button>
-                  }
-                />
-              )
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="p-2 rounded-full border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Next page"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             )}
-          </div>
+          </>
         ) : (
           <div className="bg-white rounded-3xl p-12 text-center shadow-sm">
             <p className="text-gray-600 text-lg mb-4">{t('category.noProducts')}</p>
@@ -296,6 +325,8 @@ export default function CategoryPage() {
           </div>
         )}
       </div>
+      <br></br>
     </div>
+    
   );
 }

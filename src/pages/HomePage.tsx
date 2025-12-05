@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, TrendingUp, Sparkles } from 'lucide-react';
 import { getFeaturedProducts, getBestSellers } from '../data/products';
 import ProductCard from '../components/ProductCard';
+import BestSellerCard from '../components/BestSellerCard';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { getProducts } from '../api/productsApi';
@@ -118,12 +119,10 @@ const bestSellers = products.filter(p => p.bestSeller);
 //////////////////////////////////////
 
   const heroImages = [
-    'https://cdn.pixabay.com/photo/2018/05/06/03/39/woman-3377839_1280.jpg',
-    'https://cdn.pixabay.com/photo/2024/11/13/01/47/woman-9193216_1280.jpg',
-    'https://cdn.pixabay.com/photo/2023/10/24/02/01/women-8337216_1280.jpg',
-    'https://cdn.pixabay.com/photo/2022/03/06/03/18/friends-7050708_1280.jpg',
+    
+   
     'https://cdn.pixabay.com/photo/2015/11/06/11/32/girl-1026246_1280.jpg',
-    'https://cdn.pixabay.com/photo/2017/02/16/23/10/smile-2072907_1280.jpg',
+   
     heroImage
 
   ];
@@ -143,7 +142,7 @@ const bestSellers = products.filter(p => p.bestSeller);
     <div className="min-h-screen font-hana bg-gradient-to-b from-gray-50 to-white">
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[85vh] flex items-center">
+      <section className="relative overflow-hidden min-h-[10vh] md:min-h-[70vh] lg:min-h-[85vh] flex items-center">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/70 z-10" />
 
@@ -162,12 +161,14 @@ const bestSellers = products.filter(p => p.bestSeller);
         </div>
 
         {/* Hero Text */}
-        <div className="relative z-20 max-w-7xl mx-auto text-center w-full px-4 py-20 animate-fade-in">
-          <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md px-5 py-2.5 rounded-full mb-8 shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300">
+        <div className="relative z-20 max-w-7xl mx-auto text-center w-full px-4 py-6 md:py-16 lg:py-20 animate-fade-in">
+           {/*
+          <div className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-md px-5 py-2.5 rounded-full mb-4 md:mb-8 shadow-xl border border-white/20 hover:scale-105 transition-transform duration-300">
             <Sparkles className="w-4 h-4 text-red-600 animate-pulse" />
             <span className="text-sm font-semibold text-gray-900 tracking-wide">{t('common.newCollection')} {new Date().getFullYear()}</span>
+            
           </div>
-
+*/}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 drop-shadow-2xl leading-tight animate-slide-up">
             {t('home.heroTitle')}
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-red-500 to-rose-500 drop-shadow-lg mt-2">
@@ -175,27 +176,24 @@ const bestSellers = products.filter(p => p.bestSeller);
             </span>
           </h1>
 
-          <p className="text-lg md:text-xl lg:text-2xl text-white/95 mb-10 max-w-3xl mx-auto drop-shadow-lg font-light leading-relaxed">
-            {t('home.heroDescription')}
-          </p>
-
-          <div className="flex flex-wrap gap-5 justify-center mb-12">
+          
+          <div className="flex flex-wrap gap-5 justify-center mb-6 md:mb-12">
             <Link
               to="/shop"
-              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-600 to-rose-600 text-white px-10 py-4  font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
-              <ShoppingBag className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              className="group inline-flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-600 to-rose-600 text-white px-6 py-3 md:px-10 md:py-4 text-sm md:text-base font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl hover:from-red-500 hover:to-pink-500">
+              <ShoppingBag className="w-4 h-4 md:w-5 md:h-5 group-hover:rotate-12 transition-transform" />
               {t('common.buyNow')}
             </Link>
 
             <Link
               to="/categories"
-              className="group inline-flex items-center gap-3 bg-white/95 backdrop-blur-md text-gray-900 px-10 py-4  font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl border-2 border-white/50 hover:bg-white">
+              className="hidden md:inline-flex items-center gap-3 bg-white/95 backdrop-blur-md text-gray-900 px-10 py-4  font-semibold hover:shadow-2xl transform hover:scale-110 transition-all duration-300 shadow-xl border-2 border-white/50 hover:bg-white">
               {t('common.exploreStyles')}
             </Link>
           </div>
 
           {/* Dots */}
-          <div className="flex justify-center gap-3 mt-8">
+          <div className="flex justify-center gap-3 mt-4 md:mt-8">
             {heroImages.map((_, index) => (
               <button 
                 key={index}
@@ -222,9 +220,11 @@ const bestSellers = products.filter(p => p.bestSeller);
     <div className="flex flex-col items-center mb-16 animate-fade-in">
       {/* Icon + Title */}
       <div className="flex items-center gap-4 mb-4 group">
+         {/* 
         <div className="p-2 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
           <Sparkles className="w-6 h-6 text-white" />
         </div>
+        */}
         <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
           {t('home.featuredTitle')}
         </h2>
@@ -239,9 +239,9 @@ const bestSellers = products.filter(p => p.bestSeller);
       </p>
     </div>
 
-    {/* Flex wrapper to center the grid */}
-    <div className="flex justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+    {/* Product Grid */}
+    <div className="flex justify-center w-full">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center">
         {loading ? (
           <div className="col-span-full flex justify-center items-center py-20">
             <div className="flex flex-col items-center gap-4">
@@ -284,9 +284,7 @@ const bestSellers = products.filter(p => p.bestSeller);
           <div className="flex flex-col items-center mb-16 animate-fade-in">
             {/* Icon + Title */}
             <div className="flex items-center gap-4 mb-4 group">
-        <div className="p-2 bg-gradient-to-br from-gray-700 to-gray-900 rounded-xl shadow-lg group-hover:scale-110 transition-transform duration-300">
-                <TrendingUp className="w-6 h-6 text-white" />
-              </div>
+       
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
                 {t('home.bestSellersTitle')}
               </h2>
@@ -301,8 +299,8 @@ const bestSellers = products.filter(p => p.bestSeller);
             </p>
           </div>
 
-          <div className="flex justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="flex justify-center w-full">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center">
               {loading ? (
                 <div className="col-span-full flex justify-center items-center py-20">
                   <div className="flex flex-col items-center gap-4">
@@ -325,7 +323,7 @@ const bestSellers = products.filter(p => p.bestSeller);
                     className="animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <ProductCard product={product} size="home" />
+                    <BestSellerCard product={product} />
                   </div>
                 ))
               )}

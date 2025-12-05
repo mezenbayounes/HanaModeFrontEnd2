@@ -13,6 +13,7 @@ import RegisterModal from './RegisterModal';
 import ForgotPasswordModal from './ForgotPasswordModal';
 import ResetPasswordModal from './ResetPasswordModal';
 import VerifyEmailModal from './VerifyEmailModal';
+import CartDrawer from './CartDrawer';
 
 export default function Header() {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [forgotPasswordModalOpen, setForgotPasswordModalOpen] = useState(false);
@@ -305,8 +307,8 @@ export default function Header() {
             </div>
 
             {/* Cart */}
-            <Link
-              to="/cart"
+            <button
+              onClick={() => setCartOpen(true)}
               className="relative p-2 hover:bg-gray-100 rounded-xl transition-all duration-300 group"
             >
               <ShoppingCart className="w-6 h-6 text-gray-700 group-hover:text-black transition-colors" />
@@ -315,7 +317,7 @@ export default function Header() {
                   {cartCount}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -499,6 +501,8 @@ export default function Header() {
         onClose={() => setVerifyEmailModalOpen(false)}
         email={verifyEmail}
       />
+
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 }

@@ -9,7 +9,7 @@
     "error": "Error",
     "addToCart": "Add to Cart",
     "viewDetails": "View Details",
-    "buyNow": "Buy Now",
+    "buyNow": "Buy",
     "exploreStyles": "Explore Styles",
     "newCollection": "New Collection",
     "allRightsReserved": "All Rights Reserved",
@@ -17,13 +17,17 @@
     "from": "From",
     "to": "To"
   },
+  "breadcrumb": {
+    "home": "Home",
+    "categories": "Categories"
+  },
   "home": {
     "heroTitle": "Discover Your Style",
     "heroSubtitle": "Perfect in Jeans",
     "heroDescription": "Premium women's jeans in all cuts. Find the perfect fit that flatters your silhouette.",
-    "featuredTitle": "Featured Collection",
+    "featuredTitle": "NEW  COLLECTION",
     "featuredDescription": "Explore our exclusive selection of popular items, carefully chosen for you",
-    "bestSellersTitle": "Best Sellers",
+    "bestSellersTitle": "BEST SELLERS",
     "bestSellersDescription": "Discover our most popular items, loved by our customers",
     "categoriesTitle": "Shop by Style",
     "categoriesDescription": "Explore our different cuts and find the one that suits you",
@@ -59,6 +63,7 @@
   "shop": {
     "title": "Shop",
     "allProducts": "All Products",
+    "allCategories": "All Categories",
     "filterByCategory": "Filter by Category",
     "filterByStock": "Filter by Stock",
     "inStock": "In Stock",

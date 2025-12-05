@@ -9,6 +9,10 @@ import { createOrder } from "../api/ordersApi";
 import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import LoginModal from '../components/LoginModal';
+import RegisterModal from '../components/RegisterModal';
+import ForgotPasswordModal from '../components/ForgotPasswordModal';
+import ResetPasswordModal from '../components/ResetPasswordModal';
+import VerifyEmailModal from '../components/VerifyEmailModal';
 
 export default function CheckoutPage() {
   const { t } = useTranslation();
@@ -61,6 +65,12 @@ export default function CheckoutPage() {
 
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+  const [showVerifyEmailModal, setShowVerifyEmailModal] = useState(false);
+  const [verifyEmail, setVerifyEmail] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
   const { isAuthenticated, token } = useAuth();
 
   const handlePlaceOrderClick = (e: React.FormEvent) => {
@@ -385,6 +395,91 @@ export default function CheckoutPage() {
           setShowLoginModal(false);
           processOrder();
         }}
+        onSwitchToRegister={() => {
+          setShowLoginModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(false);
+          setShowRegisterModal(true);
+        }}
+        onSwitchToForgotPassword={() => {
+          setShowLoginModal(false);
+          setShowRegisterModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(false);
+          setShowForgotPasswordModal(true);
+        }}
+        onSwitchToVerifyEmail={(email) => {
+          setVerifyEmail(email);
+          setShowLoginModal(false);
+          setShowRegisterModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(true);
+        }}
+      />
+
+      {/* Register Modal */}
+      <RegisterModal 
+        isOpen={showRegisterModal}
+        onClose={() => setShowRegisterModal(false)}
+        onSwitchToLogin={() => {
+          setShowRegisterModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(false);
+          setShowLoginModal(true);
+        }}
+        onSwitchToVerifyEmail={(email) => {
+          setVerifyEmail(email);
+          setShowLoginModal(false);
+          setShowRegisterModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(true);
+        }}
+      />
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal 
+        isOpen={showForgotPasswordModal}
+        onClose={() => setShowForgotPasswordModal(false)}
+        onSwitchToReset={(email) => {
+          setResetEmail(email);
+          setShowForgotPasswordModal(false);
+          setShowLoginModal(false);
+          setShowRegisterModal(false);
+          setShowVerifyEmailModal(false);
+          setShowResetPasswordModal(true);
+        }}
+        onSwitchToLogin={() => {
+          setShowRegisterModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(false);
+          setShowLoginModal(true);
+        }}
+      />
+
+      {/* Reset Password Modal */}
+      <ResetPasswordModal 
+        isOpen={showResetPasswordModal}
+        onClose={() => setShowResetPasswordModal(false)}
+        onSwitchToLogin={() => {
+          setShowRegisterModal(false);
+          setShowForgotPasswordModal(false);
+          setShowResetPasswordModal(false);
+          setShowVerifyEmailModal(false);
+          setShowLoginModal(true);
+        }}
+        initialEmail={resetEmail}
+      />
+
+      {/* Verify Email Modal */}
+      <VerifyEmailModal 
+        isOpen={showVerifyEmailModal}
+        onClose={() => setShowVerifyEmailModal(false)}
+        email={verifyEmail}
       />
     </div>
   );

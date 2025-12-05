@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Heart, X } from 'lucide-react';
 import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
+import ForgotPasswordModal from './ForgotPasswordModal';
+import ResetPasswordModal from './ResetPasswordModal';
+import VerifyEmailModal from './VerifyEmailModal';
 import Portal from './Portal';
 
 interface LoginRequiredModalProps {
@@ -12,6 +16,12 @@ interface LoginRequiredModalProps {
 export default function LoginRequiredModal({ isOpen, onClose }: LoginRequiredModalProps) {
   const { t } = useTranslation();
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+  const [showVerifyEmailModal, setShowVerifyEmailModal] = useState(false);
+  const [verifyEmail, setVerifyEmail] = useState('');
+  const [resetEmail, setResetEmail] = useState('');
 
   if (!isOpen) return null;
 
@@ -22,6 +32,48 @@ export default function LoginRequiredModal({ isOpen, onClose }: LoginRequiredMod
   const handleLoginSuccess = () => {
     setShowLoginModal(false);
     onClose();
+  };
+
+  const handleSwitchToRegister = () => {
+    setShowLoginModal(false);
+    setShowForgotPasswordModal(false);
+    setShowResetPasswordModal(false);
+    setShowVerifyEmailModal(false);
+    setShowRegisterModal(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowRegisterModal(false);
+    setShowForgotPasswordModal(false);
+    setShowResetPasswordModal(false);
+    setShowVerifyEmailModal(false);
+    setShowLoginModal(true);
+  };
+
+  const handleSwitchToForgotPassword = () => {
+    setShowLoginModal(false);
+    setShowRegisterModal(false);
+    setShowResetPasswordModal(false);
+    setShowVerifyEmailModal(false);
+    setShowForgotPasswordModal(true);
+  };
+
+  const handleSwitchToReset = (email: string) => {
+    setResetEmail(email);
+    setShowForgotPasswordModal(false);
+    setShowLoginModal(false);
+    setShowRegisterModal(false);
+    setShowVerifyEmailModal(false);
+    setShowResetPasswordModal(true);
+  };
+
+  const handleOpenVerifyEmail = (email: string) => {
+    setVerifyEmail(email);
+    setShowLoginModal(false);
+    setShowRegisterModal(false);
+    setShowForgotPasswordModal(false);
+    setShowResetPasswordModal(false);
+    setShowVerifyEmailModal(true);
   };
 
   return (
@@ -101,6 +153,40 @@ export default function LoginRequiredModal({ isOpen, onClose }: LoginRequiredMod
         isOpen={showLoginModal}
         onClose={() => setShowLoginModal(false)}
         onLoginSuccess={handleLoginSuccess}
+        onSwitchToRegister={handleSwitchToRegister}
+        onSwitchToForgotPassword={handleSwitchToForgotPassword}
+        onSwitchToVerifyEmail={handleOpenVerifyEmail}
+      />
+
+      {/* Register Modal */}
+      <RegisterModal 
+        isOpen={showRegisterModal}
+        onClose={() => setShowRegisterModal(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+        onSwitchToVerifyEmail={handleOpenVerifyEmail}
+      />
+
+      {/* Forgot Password Modal */}
+      <ForgotPasswordModal 
+        isOpen={showForgotPasswordModal}
+        onClose={() => setShowForgotPasswordModal(false)}
+        onSwitchToReset={handleSwitchToReset}
+        onSwitchToLogin={handleSwitchToLogin}
+      />
+
+      {/* Reset Password Modal */}
+      <ResetPasswordModal 
+        isOpen={showResetPasswordModal}
+        onClose={() => setShowResetPasswordModal(false)}
+        onSwitchToLogin={handleSwitchToLogin}
+        initialEmail={resetEmail}
+      />
+
+      {/* Verify Email Modal */}
+      <VerifyEmailModal 
+        isOpen={showVerifyEmailModal}
+        onClose={() => setShowVerifyEmailModal(false)}
+        email={verifyEmail}
       />
     </>
   );

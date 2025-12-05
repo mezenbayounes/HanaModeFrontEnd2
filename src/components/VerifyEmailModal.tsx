@@ -175,7 +175,7 @@ export default function VerifyEmailModal({
                     // You can implement resend OTP logic here if available
                     setError('');
                     // Call resend API if available
-                  }}
+                  }}  
                   className="text-sm text-gray-600 hover:text-black"
                   disabled={loading}
                 >

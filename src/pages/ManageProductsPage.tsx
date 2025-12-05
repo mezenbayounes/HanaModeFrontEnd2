@@ -43,18 +43,9 @@ export default function ManageProductsPage() {
         fetchProducts();
         setTimeout(() => setSuccess(null), 3000);
       } catch (err: any) {
-        // Check if it's the specific error about product in orders
-        const errorCode = err?.response?.data?.error;
-        
-        if (errorCode === 'PRODUCT_IN_ORDERS') {
-          // Show translated message in popup
-          setErrorPopup(t('adminProduct.errorDeleteInOrders'));
-        } else {
-          // Show generic error in banner
-          const errorMessage = err?.response?.data?.message || t('adminProduct.errorDelete');
-          setError(errorMessage);
-          setTimeout(() => setError(null), 5000);
-        }
+        // Show error in popup
+        const errorMessage = err?.response?.data?.message || t('adminProduct.errorDelete');
+        setErrorPopup(errorMessage);
       }
     }
   };

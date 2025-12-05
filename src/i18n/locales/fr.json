@@ -9,7 +9,7 @@
     "error": "Erreur",
     "addToCart": "Ajouter au panier",
     "viewDetails": "Voir Détails",
-    "buyNow": "Acheter Maintenant",
+    "buyNow": "Acheter",
     "exploreStyles": "Explorer les Styles",
     "newCollection": "Nouvelle Collection",
     "allRightsReserved": "Tous droits réservés",
@@ -17,13 +17,17 @@
     "from": "Du",
     "to": "Au"
   },
+  "breadcrumb": {
+    "home": "Accueil",
+    "categories": "Catégories"
+  },
   "home": {
     "heroTitle": "Découvrez Votre Style",
     "heroSubtitle": "Parfait en Jeans",
     "heroDescription": "Jeans premium pour femmes, toutes coupes confondues. Trouvez la coupe parfaite qui sublime votre silhouette.",
-    "featuredTitle": "Collection Vedettes",
+    "featuredTitle": "NOUVELLE  COLLECTION",
     "featuredDescription": "Découvrez notre sélection exclusive d'articles populaires, soigneusement choisis pour vous",
-    "bestSellersTitle": "Meilleures Ventes",
+    "bestSellersTitle": "MEILLEURES VENTES",
     "bestSellersDescription": "Découvrez nos articles les plus populaires, approuvés par nos clients",
     "categoriesTitle": "Acheter par Style",
     "categoriesDescription": "Explorez nos différentes coupes et trouvez celle qui vous correspond",
@@ -59,6 +63,7 @@
   "shop": {
     "title": "Boutique",
     "allProducts": "Tous les produits",
+    "allCategories": "Toutes les Catégories",
     "filterByCategory": "Filtrer par catégorie",
     "filterByStock": "Filtrer par stock",
     "inStock": "En stock",
