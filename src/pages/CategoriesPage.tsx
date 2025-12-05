@@ -32,7 +32,7 @@ export default function CategoriesPage() {
       {/* Header */}
       <div className="bg-white shadow-sm py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
+          <h1 className="text-5xl font-extrabold text-gray-900 mb-4 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
             {t("categories.title")}
           </h1>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">

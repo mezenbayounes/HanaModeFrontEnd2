@@ -119,11 +119,12 @@ export default function CheckoutPage() {
       
       const savedOrder = await createOrder(orderData, currentToken || undefined);
 
+      // Save the real backend order to localStorage so OrderConfirmationPage can read it
+      localStorage.setItem("lastOrder", JSON.stringify(savedOrder));
+
       // ✨ FIX: navigate AFTER render cycle
       setTimeout(() => {
-        navigate("/order-confirmation", {
-          state: { order: savedOrder },
-        });
+        navigate("/order-confirmation");
       }, 0);
 
       // Clear cart a bit later
@@ -379,7 +380,7 @@ export default function CheckoutPage() {
                 }}
                 className="w-full py-3 px-4 bg-white text-gray-900 font-bold border-2 border-gray-200  hover:bg-gray-50 transition-colors"
               >
-                {t('checkout.continueGuest', 'Continue as Guest')}
+                {t('cart.cancel', 'Continue as Guest')}
               </button>
             </div>
           </div>

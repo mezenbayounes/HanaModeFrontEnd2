@@ -43,7 +43,9 @@ export default function OrderConfirmationPage() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <p className="text-sm text-gray-500 mb-1">{t('orderConfirmation.orderId')}</p>
-              <p className="text-2xl font-bold text-gray-900 font-mono">{order.id}</p>
+              <p className="text-2xl font-bold text-gray-900 font-mono">
+                ORD-{order.id}
+              </p>
             </div>
             <div className="text-left sm:text-right">
               <p className="text-sm text-gray-500 mb-1">{t('orderConfirmation.orderDate')}</p>
@@ -67,6 +69,7 @@ export default function OrderConfirmationPage() {
                 <User className="w-5 h-5" />
                 {t('orderConfirmation.customerInfo')}
               </h2>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-start gap-3">
                   <User className="w-5 h-5 text-gray-400 mt-0.5" />

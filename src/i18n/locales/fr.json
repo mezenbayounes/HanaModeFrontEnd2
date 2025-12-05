@@ -1,6 +1,6 @@
 {
   "common": {
-    "home": "ACUEIL",
+    "home": "ACCUEIL",
     "shop": "BOUTIQUE",
     "categories": "CATÉGORIES",
     "contact": "CONTACT",
@@ -69,7 +69,7 @@
     "inStock": "En stock",
     "outOfStock": "Rupture de stock",
     "all": "Tous",
-    "ourProducts": "Nos Articles",
+    "ourProducts": "NOS ARTICLES",
     "discoverCollection": "Découvrez notre collection complète de",
     "styles": "styles",
     "categories": "Catégories",
@@ -86,7 +86,7 @@
     "loadError": "Échec du chargement"
   },
   "categories": {
-    "title": "Parcourir par Style",
+    "title": "PARCOURIR PAR STYLE",
     "description": "Explorez notre collection organisée par vos styles de jeans préférés",
     "noCategories": "Aucune catégorie trouvée.",
     "exploreCategory": "Explorez tous les produits de la catégorie",
@@ -229,7 +229,7 @@
     "continueShopping": "Continuer les achats"
   },
   "contact": {
-    "title": "Contactez-nous",
+    "title": "CONTACTEZ-NOUS",
     "description": "Nous sommes là pour vous aider",
     "name": "Nom",
     "email": "Email",

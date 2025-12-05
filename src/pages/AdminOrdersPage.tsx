@@ -47,6 +47,7 @@ const AdminOrdersPage: React.FC = () => {
 	// Filter states
 	const [filterStatus, setFilterStatus] = useState<string>('all');
 	const [filterName, setFilterName] = useState<string>('');
+	const [filterOrderId, setFilterOrderId] = useState<string>('');
 	const [filterDateFrom, setFilterDateFrom] = useState<string>('');
 	const [filterDateTo, setFilterDateTo] = useState<string>('');
 
@@ -90,11 +91,35 @@ const AdminOrdersPage: React.FC = () => {
 		}
 	};
 
+	const getStatusColor = (status: string) => {
+		switch (status) {
+			case 'pending':
+				return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+			case 'processing':
+				return 'bg-blue-100 text-blue-800 border-blue-300';
+			case 'shipped':
+				return 'bg-purple-100 text-purple-800 border-purple-300';
+			case 'delivered':
+				return 'bg-green-100 text-green-800 border-green-300';
+			case 'cancelled':
+				return 'bg-red-100 text-red-800 border-red-300';
+			default:
+				return 'bg-gray-100 text-gray-800 border-gray-300';
+		}
+	};
+
 	// Filter orders based on filters
 	const filteredOrders = orders.filter(order => {
 		// Status filter
 		if (filterStatus !== 'all' && order.status !== filterStatus) {
 			return false;
+		}
+
+		// Order ID filter
+		if (filterOrderId) {
+			if (!order.id.toString().includes(filterOrderId)) {
+				return false;
+			}
 		}
 
 		// Name filter
@@ -130,6 +155,7 @@ const AdminOrdersPage: React.FC = () => {
 	const resetFilters = () => {
 		setFilterStatus('all');
 		setFilterName('');
+		setFilterOrderId('');
 		setFilterDateFrom('');
 		setFilterDateTo('');
 	};
@@ -245,6 +271,18 @@ const AdminOrdersPage: React.FC = () => {
 							</select>
 						</div>
 
+						{/* Order ID Filter */}
+						<div className="w-full md:w-1/6 space-y-1.5">
+							<label className="text-sm font-semibold text-gray-700 uppercase tracking-wider">{t('orders.orderId', 'Order ID')}</label>
+							<input
+								type="text"
+								value={filterOrderId}
+								onChange={(e) => setFilterOrderId(e.target.value)}
+								placeholder="ID..."
+								className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all text-base"
+							/>
+						</div>
+
 						{/* Name/Email Filter */}
 						<div className="w-full md:w-1/4 space-y-1.5">
 							<label className="text-sm font-semibold text-gray-700 uppercase tracking-wider">{t('orders.customer', 'Customer')}</label>
@@ -313,7 +351,9 @@ const AdminOrdersPage: React.FC = () => {
 									<div className="space-y-2">
 										<div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
 											<span className="text-sm font-medium text-gray-500 uppercase tracking-wider">{t('orders.orderId', 'Order ID')}</span>
-											<span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded break-all sm:break-normal">{order.id}</span>
+											<span className="text-sm font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded break-all sm:break-normal">
+												ORD-{order.id}
+											</span>
 										</div>
 										<div className="flex items-center gap-2 text-sm text-gray-500">
 											<svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,10 +369,12 @@ const AdminOrdersPage: React.FC = () => {
 										<select
 											value={order.status}
 											onChange={e => handleStatusChange(order.id, e.target.value as Order['status'])}
-											className="px-3 md:px-4 py-2 md:py-2.5 rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition-all bg-white text-base font-medium"
+											className={`px-3 md:px-4 py-2 md:py-2.5 rounded-lg border-2 focus:outline-none focus:ring-2 focus:ring-opacity-50 transition-all font-bold ${getStatusColor(order.status)}`}
 										>
 											{statusOptions.map(status => (
-												<option key={status} value={status}>{t(`orders.status_${status}`, status)}</option>
+												<option key={status} value={status} className="bg-white text-gray-900">
+													{t(`orders.status_${status}`, status)}
+												</option>
 											))}
 										</select>
 									</div>

@@ -93,7 +93,10 @@ export default function ShopPage() {
       {/* Header */}
       <div className="text-center py-6">
         <ShoppingBag className="mx-auto w-10 h-10 text-gray-700 to gray-900" />
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">{t('shop.ourProducts')}</h2>
+        
+        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+          {t('shop.ourProducts')}
+        </h2>
         <div className="w-16 h-1 bg-gray-700 to gray-900 rounded-full mx-auto mb-2"></div>
         <p className="text-gray-500 text-sm md:text-base">
           {t('shop.discoverCollection')} {products.length} {t('shop.styles')}

@@ -69,7 +69,7 @@
     "inStock": "In Stock",
     "outOfStock": "Out of Stock",
     "all": "All",
-    "ourProducts": "Our Products",
+    "ourProducts": "OUR  PRODUCTS",
     "discoverCollection": "Discover our full collection of",
     "styles": "styles",
     "categories": "Categories",
@@ -86,7 +86,7 @@
     "loadError": "Failed to load"
   },
   "categories": {
-    "title": "Browse by Style",
+    "title": "BROWSE BY STYLE",
     "description": "Explore our collection organized by your favorite jeans styles",
     "noCategories": "No categories found.",
     "exploreCategory": "Explore all products in the",
@@ -229,7 +229,7 @@
     "continueShopping": "Continue Shopping"
   },
   "contact": {
-    "title": "Contact Us",
+    "title": "CONTACT US",
     "description": "We are here to help",
     "name": "Name",
     "email": "Email",

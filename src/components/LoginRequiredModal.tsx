@@ -118,7 +118,7 @@ export default function LoginRequiredModal({ isOpen, onClose }: LoginRequiredMod
                   onClick={onClose}
                   className="flex-1 px-6 py-3 font-semibold border-2 border-gray-600 text-black bg-white transition-all duration-300 hover:bg-black hover:text-white hover:border-black hover:shadow-xl hover:scale-105"
                 >
-                  {t('checkout.continueGuest')}
+                  {t('cart.cancel')}
                 </button>
                 <button
                   onClick={handleGoToLogin}

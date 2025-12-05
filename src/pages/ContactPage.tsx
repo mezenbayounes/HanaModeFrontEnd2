@@ -54,7 +54,7 @@ export default function ContactPage() {
             <p className="text-white/80 uppercase tracking-[0.3em] text-sm">
               {t('contact.getInTouch', 'Contactez-nous')}
             </p>
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-white bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent">
               {t('contact.title')}
             </h1>
             <p className="text-white/90 text-lg max-w-2xl">
