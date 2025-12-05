@@ -119,8 +119,14 @@ export default function CheckoutPage() {
       
       const savedOrder = await createOrder(orderData, currentToken || undefined);
 
-      // Save the real backend order to localStorage so OrderConfirmationPage can read it
-      localStorage.setItem("lastOrder", JSON.stringify(savedOrder));
+      // Construct a complete order object for display, merging backend info with frontend product details
+      const completeOrderForDisplay = {
+        ...savedOrder,
+        items: items, // Use the items from the cart which have full product details (images, name, etc.)
+      };
+
+      // Save the complete order to localStorage so OrderConfirmationPage can read it
+      localStorage.setItem("lastOrder", JSON.stringify(completeOrderForDisplay));
 
       // ✨ FIX: navigate AFTER render cycle
       setTimeout(() => {
