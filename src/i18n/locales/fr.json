@@ -426,7 +426,8 @@
     "loginRequiredTitle": "Connexion Requise",
     "loginRequiredMessage": "Vous devez être connecté pour ajouter des articles à vos favoris.",
     "goToLogin": "Se Connecter",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "confirmRemove": "Êtes-vous sûr de vouloir supprimer cet article de vos favoris ?"
   },
   "orders": {
     "adminTitle": "Toutes les Commandes",

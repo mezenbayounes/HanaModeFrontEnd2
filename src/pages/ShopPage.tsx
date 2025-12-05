@@ -8,6 +8,7 @@ import React from "react";
 import { getProducts } from "../api/productsApi";
 import { getCategories } from "../api/CategoryApi";
 import FilterPanel from "../components/FilterPanel";
+import ProductCard from "../components/ProductCard";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -146,7 +147,7 @@ export default function ShopPage() {
             <div className="flex justify-center w-full">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center">
               {paginatedProducts.map((product) => (
-                <BestSellerCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} />
               ))}
               </div>
             </div>

@@ -3,10 +3,8 @@ import { ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '../types/Product';
 import { useTranslation } from 'react-i18next';
 import { useFavorites } from '../context/FavoritesContext';
-import { useAuth } from '../context/AuthContext';
 import React, { useState } from 'react';
 import { API_URL } from '../config';
-import LoginRequiredModal from './LoginRequiredModal';
 
 interface ProductCardProps {
   product: Product;
@@ -16,9 +14,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, size = 'default' }: ProductCardProps) {
   const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
-  const { isAuthenticated } = useAuth();
+  const { isFavorite } = useFavorites();
 
   const hasDiscount = !!product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price;
   const displayPrice = (product.discountPrice && product.discountPrice > 0) ? product.discountPrice : product.price;
@@ -28,23 +24,6 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
 
   const mainImage = product.images[0];
   const hoverImage = product.images[1] || product.images[0]; // fallback if no second image
-
-  const handleFavorite = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    // Check if user is authenticated
-    if (!isAuthenticated) {
-      setShowLoginModal(true);
-      return;
-    }
-    
-    if (isFavorite(product.id)) {
-      removeFromFavorites(product.id);
-    } else {
-      addToFavorites(product.id);
-    }
-  };
 
   // Size-specific classes
   const sizeClasses = {
@@ -169,19 +148,18 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
             -{discountPercent}%
           </div>
         )}
-        {/* Favorite Button - Always Visible */}
-        <button
-          className="absolute top-1.5 right-1.5 md:top-3 md:right-3 bg-white/80 backdrop-blur-sm p-1 md:p-2 rounded-full shadow-lg hover:bg-white transition-all hover:scale-110 z-10"
-          onClick={handleFavorite}
+        {/* Favorite Indicator - Read Only */}
+        <div
+          className="absolute top-1.5 right-1.5 md:top-3 md:right-3 bg-white/80 backdrop-blur-sm p-1 md:p-2 rounded-full shadow-lg"
         >
           <Heart 
             className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${
               isFavorite(product.id) 
                 ? 'fill-red-500 text-red-500' 
-                : 'text-gray-600'
+                : 'text-gray-400'
             }`} 
           />
-        </button>
+        </div>
         {/* Add to Cart Button - Visible on Hover */}
         <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity z-10">
           <button
@@ -254,12 +232,6 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
         */}
       </div>
     </Link>
-    
-    {/* Login Required Modal */}
-    <LoginRequiredModal 
-      isOpen={showLoginModal}
-      onClose={() => setShowLoginModal(false)}
-    />
     </>
   );
 }

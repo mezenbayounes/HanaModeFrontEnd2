@@ -323,7 +323,7 @@ const bestSellers = products.filter(p => p.bestSeller);
                     className="animate-fade-in-up"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <BestSellerCard product={product} />
+                    <ProductCard product={product} />
                   </div>
                 ))
               )}

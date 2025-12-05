@@ -11,6 +11,7 @@ import { getProductsByCategory } from '../api/productsApi';
 import ProductFilter, { SortOption, ViewMode } from '../components/ProductFilter';
 import BestSellerCard from '../components/BestSellerCard';
 import ProductListItem from '../components/ProductListItem';
+import ProductCard from '../components/ProductCard';
 
 const ITEMS_PER_PAGE = 9;
 
@@ -240,7 +241,7 @@ export default function CategoryPage() {
               <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center' : 'space-y-6'}>
               {paginatedProducts.map(product =>
                 viewMode === 'grid' ? (
-               <BestSellerCard key={product.id} product={product} />
+               <ProductCard key={product.id} product={product} />
                 ) : (
                   <ProductListItem
                     key={product.id}

@@ -1,21 +1,29 @@
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ShoppingCart, Star, ChevronLeft, ChevronRight, Check, X, Maximize2 } from 'lucide-react';
+import { ShoppingCart, Star, ChevronLeft, ChevronRight, Check, X, Maximize2, Heart } from 'lucide-react';
 import { useCartStore } from '../store/useCartStore';
+import { useFavorites } from '../context/FavoritesContext';
+import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import { Product } from '../types/Product';
 import { getProductById } from '../api/productsApi';
 import { API_URL } from '../config';
+import LoginRequiredModal from '../components/LoginRequiredModal';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 export default function ProductDetailPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const addItem = useCartStore(state => state.addItem);
+  const { isFavorite, addToFavorites, removeFromFavorites } = useFavorites();
+  const { isAuthenticated } = useAuth();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
@@ -63,6 +71,27 @@ export default function ProductDetailPage() {
       }
     }
   }, [selectedSize, product]);
+
+  const handleFavorite = () => {
+    if (!product) return;
+    
+    if (!isAuthenticated) {
+      setShowLoginModal(true);
+      return;
+    }
+    
+    if (isFavorite(product.id)) {
+      setShowConfirmModal(true);
+    } else {
+      addToFavorites(product.id);
+    }
+  };
+
+  const handleConfirmRemoveFavorite = () => {
+    if (product) {
+      removeFromFavorites(product.id);
+    }
+  };
 
   if (loading) {
     return (
@@ -280,14 +309,27 @@ export default function ProductDetailPage() {
           
           {/* Title & Rating */}
           <div className="mb-6">
-            <h1 className="text-3xl md:text-3xl font-serif uppercase tracking-wide text-gray-900 mb-2">
-              {product.name}
-            </h1>
+            <div className="flex justify-between items-start">
+              <h1 className="text-3xl md:text-3xl font-serif uppercase tracking-wide text-gray-900 mb-2">
+                {product.name}
+              </h1>
+              <button 
+                onClick={handleFavorite}
+                className="w-12 h-12 flex items-center justify-center border border-gray-200 hover:border-gray-900 transition-colors bg-white"
+                title={isFavorite(product.id) ? "Remove from Favorites" : "Add to Favorites"}
+              >
+                <Heart 
+                  className={`w-6 h-6 transition-colors ${
+                    isFavorite(product.id) ? 'fill-red-500 text-red-500' : 'text-gray-900'
+                  }`} 
+                />
+              </button>
+            </div>
             <div className="flex items-center gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star key={star} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
               ))}
-              <span className="text-xs text-gray-400 ml-2">(Review placeholder)</span>
+             
             </div>
             
             {/* Price */}
@@ -400,8 +442,8 @@ export default function ProductDetailPage() {
             </ul>
           </div>
 
-          {/* ADD TO CART */}
-          <div className="mt-auto">
+          {/* ADD TO CART & FAVORITE */}
+          <div className="mt-auto flex gap-3">
              <button
                onClick={handleAddToCart}
                disabled={!product.inStock}
@@ -417,6 +459,21 @@ export default function ProductDetailPage() {
           </div>
         </div>
       </div>
+      
+      {/* Login Required Modal */}
+      <LoginRequiredModal 
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+      />
+      
+      {/* Confirmation Modal */}
+      <ConfirmationModal 
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={handleConfirmRemoveFavorite}
+        title={t('favorites.favorites', 'Favorites')}
+        message={t('favorites.confirmRemove')}
+      />
     </div>
   );
 }

@@ -423,7 +423,8 @@
     "loginRequiredTitle": "Login Required",
     "loginRequiredMessage": "You need to be logged in to add items to your favorites.",
     "goToLogin": "Go to Login",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "confirmRemove": "Are you sure you want to delete this from favorites?"
   },
   "orders": {
     "adminTitle": "All Orders",
