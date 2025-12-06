@@ -13,6 +13,7 @@ import heroImage from '../assets/heroImage1.png'; // adjust the path as needed
 import heroImage2 from '../assets/heroImage2.png'; // adjust the path as needed
 
 import { API_URL } from '../config';
+import SkeletonCard from '../components/SkeletonCard';
 
 interface Category {
   id: number;
@@ -256,12 +257,9 @@ const bestSellers = products.filter(p => p.bestSeller);
   px-0             /* small padding on mobile */
   md:px-0          /* remove padding on larger screens */
 ">     {loading ? (
-          <div className="col-span-full flex justify-center items-center py-20">
-            <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-              <p className="text-gray-600 font-medium">{t('home.loadingProducts')}</p>
-            </div>
-          </div>
+           Array.from({ length: 4 }).map((_, index) => (
+      <SkeletonCard key={index} size="home" />
+    ))
         ) : error ? (
           <div className="col-span-full flex justify-center items-center py-20">
             <p className="text-red-600 font-semibold text-lg">{error}</p>
@@ -316,12 +314,9 @@ const bestSellers = products.filter(p => p.bestSeller);
           <div className="flex justify-center w-full px-0 md:px-4">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-6 md:gap-x-4 md:gap-y-8 max-w-7xl w-full">
               {loading ? (
-                <div className="col-span-full flex justify-center items-center py-20">
-                  <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-purple-600 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="text-gray-600 font-medium">{t('home.loadingProducts')}</p>
-                  </div>
-                </div>
+                 Array.from({ length: 4 }).map((_, index) => (
+      <SkeletonCard key={index} size="home" />
+    ))
               ) : error ? (
                 <div className="col-span-full flex justify-center items-center py-20">
                   <p className="text-red-600 font-semibold text-lg">{error}</p>

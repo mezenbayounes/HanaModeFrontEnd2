@@ -55,10 +55,10 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       gap: 'gap-1.5 md:gap-2'
     },
     home: {
-      titleSize: 'text-[10px] sm:text-xs md:text-sm',
-      priceSize: 'text-xs sm:text-sm md:text-base',
+      titleSize: 'text-[12px] sm:text-xs md:text-sm',
+      priceSize: 'text-[14px] sm:text-sm md:text-base',
       iconSize: 'w-3.5 h-3.5 md:w-5 md:h-5',
-      gap: 'gap-1 md:gap-1.5'
+      gap: 'gap- md:gap-1.5'
     }
   };
 
@@ -119,14 +119,14 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
       </div>
 
       {/* Info Section - Fixed Height for Uniformity */}
-      <div className="flex flex-col h-[70px] shrink-0 px-1 border-t border-transparent">
+      <div className="flex flex-col h-[75px] shrink-0 px-1 border-t border-transparent">
         {/* Category Centered (Swapped with Name) */}
         <h3 className={`text-center font-medium uppercase tracking-wide text-gray-500 ${titleSize} truncate mb-0.5`}>
           {product.category.replace('-', ' ')}
         </h3>
 
         {/* Colors Row (Centered) */}
-        <div className="flex justify-center items-center gap-1.5 mb-1 min-h-[12px]">
+        <div className="flex justify-center items-center gap-1.5 mb-0 min-h-[4px]">
             {uniqueColors.length > 0 ? (
                 uniqueColors.map((color: any, index) => (
                     <div

@@ -12,6 +12,7 @@ import ProductFilter, { SortOption, ViewMode } from '../components/ProductFilter
 import BestSellerCard from '../components/BestSellerCard';
 import ProductListItem from '../components/ProductListItem';
 import ProductCard from '../components/ProductCard';
+import SkeletonCard from '../components/SkeletonCard';
 
 const ITEMS_PER_PAGE = 9;
 
@@ -237,32 +238,16 @@ export default function CategoryPage() {
 
         {processedProducts.length > 0 ? (
           <>
-            <div className={viewMode === 'grid' ? 'flex justify-center w-full' : ''}>
-              <div className={viewMode === 'grid' ? 'grid grid-cols-2     md:grid-cols-3    lg:grid-cols-4    gap-x-4 gap-y-6 md:gap--4 md:gap-y-8w-fullmax-w-full px-0 md:px-0  md:px-0 ' : 'space-y-6'}>
-              {paginatedProducts.map(product =>
-                viewMode === 'grid' ? (
-               <ProductCard key={product.id} product={product} />
-                ) : (
-                  <ProductListItem
-                    key={product.id}
-                    product={product}
-                    onClick={() => navigate(`/product/${product.id}`)}
-                    actions={
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`/product/${product.id}`);
-                        }}
-                        className="px-6 py-3  bg-gray-900 text-white font-semibold hover:-translate-y-0.5 hover:shadow-lg transition-all"
-                      >
-                        {t('common.viewDetails')}
-                      </button>
-                    }
-                  />
-                )
-              )}
-              </div>
-            </div>
+            <div className="flex justify-center w-full">
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-6 md:gap-x-4 md:gap-y-8 w-full max-w-full px-0 md:px-0">
+    {loading
+      ? // Show 8 skeleton cards while loading
+        Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)
+      : paginatedProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+  </div>
+</div>
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
