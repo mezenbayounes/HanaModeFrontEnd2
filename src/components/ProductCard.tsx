@@ -76,12 +76,12 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
   return (
     <Link
       to={`/product/${product.id}`}
-      className="group flex flex-col h-full border border-gray-100 bg-white rounded-xl p-1.5 md:p-2 shadow-sm hover:shadow-md transition-all duration-300"
+      className="group flex flex-col h-full border border-gray-100 bg-white rounded-xl p-0.5 md:p-2 shadow-sm hover:shadow-md transition-all duration-300"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image Container */}
-      <div className="relative aspect-[4/5] overflow-hidden bg-gray-100 rounded-xl mb-3 shadow-sm group-hover:shadow-md transition-shadow duration-300">
+      <div className="relative aspect-[4/5] overflow-hidden bg-gray-100 rounded-md mb-2 md:mb-3 shadow-sm group-hover:shadow-md transition-shadow duration-300">
         {/* Scrollable Images */}
         <div 
           ref={scrollRef}
@@ -118,20 +118,20 @@ export default function ProductCard({ product, size = 'default' }: ProductCardPr
         </div>
       </div>
 
-      {/* Info Section */}
-      <div className="flex flex-col flex-1 px-1">
+      {/* Info Section - Fixed Height for Uniformity */}
+      <div className="flex flex-col h-[70px] shrink-0 px-1 border-t border-transparent">
         {/* Category Centered (Swapped with Name) */}
-        <h3 className={`text-center font-medium uppercase tracking-wide text-gray-500 ${titleSize} truncate mb-2`}>
+        <h3 className={`text-center font-medium uppercase tracking-wide text-gray-500 ${titleSize} truncate mb-0.5`}>
           {product.category.replace('-', ' ')}
         </h3>
 
         {/* Colors Row (Centered) */}
-        <div className="flex justify-center items-center gap-1.5 mb-3 min-h-[12px]">
+        <div className="flex justify-center items-center gap-1.5 mb-1 min-h-[12px]">
             {uniqueColors.length > 0 ? (
                 uniqueColors.map((color: any, index) => (
                     <div
                         key={index}
-                        className="w-2.5 h-2.5 rounded-full border border-gray-200 shadow-sm"
+                        className="w-2.5 h-2.5  border border-gray-200 shadow-sm"
                         style={{ backgroundColor: color.code }}
                         title={color.name}
                     />

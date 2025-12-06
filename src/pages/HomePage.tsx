@@ -243,9 +243,19 @@ const bestSellers = products.filter(p => p.bestSeller);
     </div>
 
     {/* Product Grid */}
-    <div className="flex justify-center w-full">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center">
-        {loading ? (
+    <div className="flex justify-center w-full px-0 md:px-4">
+<div className="
+  grid 
+  grid-cols-2      /* 2 cards per row on mobile */
+  md:grid-cols-3   /* 3 cards on medium screens */
+  lg:grid-cols-4   /* 4 cards on large screens */
+  gap-x-4 gap-y-6  /* smaller gaps on mobile to make cards bigger */
+  md:gap-x-4 md:gap-y-8
+  w-full
+  max-w-full
+  px-0             /* small padding on mobile */
+  md:px-0          /* remove padding on larger screens */
+">     {loading ? (
           <div className="col-span-full flex justify-center items-center py-20">
             <div className="flex flex-col items-center gap-4">
               <div className="w-12 h-12 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
@@ -264,7 +274,7 @@ const bestSellers = products.filter(p => p.bestSeller);
           featured.map((product, index) => (
             <div 
               key={product.id} 
-              className="animate-fade-in-up"
+              className="animate-fade-in-up h-full w-full"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <ProductCard product={product} size="home" />
@@ -278,7 +288,7 @@ const bestSellers = products.filter(p => p.bestSeller);
 
 
       {/* Best Sellers */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden">
+      <section className="py-20 px-0 md:px-4 bg-gradient-to-b from-white via-gray-50/50 to-white relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-100/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
@@ -303,8 +313,8 @@ const bestSellers = products.filter(p => p.bestSeller);
             */}
           </div>
 
-          <div className="flex justify-center w-full">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center">
+          <div className="flex justify-center w-full px-0 md:px-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-6 md:gap-x-4 md:gap-y-8 max-w-7xl w-full">
               {loading ? (
                 <div className="col-span-full flex justify-center items-center py-20">
                   <div className="flex flex-col items-center gap-4">
@@ -324,7 +334,7 @@ const bestSellers = products.filter(p => p.bestSeller);
                 bestSellers.map((product, index) => (
                   <div 
                     key={product.id}
-                    className="animate-fade-in-up"
+                    className="animate-fade-in-up h-full w-full"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <ProductCard product={product} />
