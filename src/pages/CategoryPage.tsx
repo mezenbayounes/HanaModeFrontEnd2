@@ -238,7 +238,7 @@ export default function CategoryPage() {
         {processedProducts.length > 0 ? (
           <>
             <div className={viewMode === 'grid' ? 'flex justify-center w-full' : ''}>
-              <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center' : 'space-y-6'}>
+              <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-3 max-w-6xl justify-items-center' : 'space-y-6'}>
               {paginatedProducts.map(product =>
                 viewMode === 'grid' ? (
                <ProductCard key={product.id} product={product} />

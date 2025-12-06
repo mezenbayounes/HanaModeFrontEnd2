@@ -10,6 +10,8 @@ import { getProducts } from '../api/productsApi';
 import { getCategories } from '../api/CategoryApi';
 import { Product } from '../types/Product';
 import heroImage from '../assets/heroImage1.png'; // adjust the path as needed
+import heroImage2 from '../assets/heroImage2.png'; // adjust the path as needed
+
 import { API_URL } from '../config';
 
 interface Category {
@@ -121,9 +123,9 @@ const bestSellers = products.filter(p => p.bestSeller);
   const heroImages = [
     
    
-    'https://cdn.pixabay.com/photo/2015/11/06/11/32/girl-1026246_1280.jpg',
    
-    heroImage
+    heroImage,
+    heroImage2,
 
   ];
 
@@ -230,13 +232,14 @@ const bestSellers = products.filter(p => p.bestSeller);
         </h2>
       </div>
 
-      {/* Small Red Separator */}
-      <div className="w-20 h-1.5 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-full mb-4 shadow-md"></div>
-
-      {/* Description */}
+      {/* Small Red Separator 
+      <div className="w-20 h-1 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700  mb-4 shadow-md"></div>
+*/}
+      {/* Description 
       <p className="text-gray-600 text-center text-lg max-w-2xl font-light">
         {t('home.featuredDescription')}
       </p>
+      */}
     </div>
 
     {/* Product Grid */}
@@ -290,13 +293,14 @@ const bestSellers = products.filter(p => p.bestSeller);
               </h2>
             </div>
 
-            {/* Small gray Separator */}
+            {/* Small gray Separator 
       <div className="w-20 h-1.5 bg-gradient-to-r from-gray-700 via-gray-600 to-gray-700 rounded-full mb-4 shadow-md"></div>
-
-            {/* Description */}
+*/}
+            {/* Description 
             <p className="text-gray-600 text-center text-lg max-w-2xl font-light">
               {t('home.bestSellersDescription')}
             </p>
+            */}
           </div>
 
           <div className="flex justify-center w-full">

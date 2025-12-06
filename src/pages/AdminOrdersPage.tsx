@@ -4,10 +4,16 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { Printer } from 'lucide-react';
+import logo from '../assets/hanaModeLogo.png';
 
 interface OrderItem {
 	product: { 
 		name: string;
+		price?: number;
+		discountPrice?: number;
 		images?: string[];
 		colors?: Array<{ name: string; code: string; }>;
 	} | string;
@@ -17,6 +23,13 @@ interface OrderItem {
 	colorName?: string; // color name
 	colorCode?: string; // color hex code
 }
+
+// ... existing interfaces ...
+
+// Inside component ...
+
+
+// ... existing interfaces ...
 
 interface Order {
 	id: number;
@@ -158,6 +171,200 @@ const AdminOrdersPage: React.FC = () => {
 		setFilterOrderId('');
 		setFilterDateFrom('');
 		setFilterDateTo('');
+	};
+
+    const loadImage = (url: string): Promise<HTMLImageElement> => {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = url;
+            img.crossOrigin = 'Anonymous';
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+        });
+    };
+
+	const handleExportPDF = async () => {
+		const doc = new jsPDF();
+        let logoImg: HTMLImageElement | null = null;
+        try {
+            logoImg = await loadImage(logo);
+        } catch (e) {
+            console.error("Failed to load logo", e);
+        }
+
+		filteredOrders.forEach((order, index) => {
+			if (index > 0) {
+				doc.addPage();
+			}
+
+            // --- Modern Header (White Theme) ---
+            
+            // Logo (Top Left)
+            if (logoImg) {
+                const logoRatio = logoImg.width / logoImg.height;
+                const logoHeight = 25; 
+                const logoWidth = logoHeight * logoRatio;
+                doc.addImage(logoImg, 'PNG', 15, 10, logoWidth, logoHeight);
+            }
+            
+            // "Hana Mode" Brand Text (Next to logo)
+            // Explicitly requested text.
+            doc.setFontSize(24);
+            doc.setTextColor(17, 24, 39); // gray-900 (Dark)
+            doc.setFont('helvetica', 'bold');
+            // Offset X based on logo or fixed? Fixed for consistency if logo fails.
+            // If logo is present at x=15, width~25-40... let's Text start at x=60?
+            // "upper page white with logo ... and hana mode text"
+            // Let's put Text right next to logo.
+            doc.text('Hana Mode', 50, 25);
+			
+            // Facture Title (Top Right)
+			doc.setFontSize(26);
+			doc.setTextColor(17, 24, 39); // Dark
+            doc.setFont('helvetica', 'bold');
+			doc.text('FACTURE', 195, 25, { align: 'right' }); 
+            
+            // Sub-info under Title
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(107, 114, 128); // gray-500
+            doc.text(`N° ${order.id}`, 195, 32, { align: 'right' });
+            doc.text(`DATE: ${new Date(order.orderDate).toLocaleDateString('fr-FR')}`, 195, 37, { align: 'right' });
+            
+            // Status just under Date
+            const statusFr: Record<string, string> = {
+                'pending': 'En attente',
+                'processing': 'En cours',
+                'shipped': 'Expédiée',
+                'delivered': 'Livrée',
+                'cancelled': 'Annulée'
+            };
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(75, 85, 99); 
+			const statusText = (statusFr[order.status] || order.status || '').toUpperCase();
+            doc.text(`STATUT: ${statusText}`, 195, 42, { align: 'right' });
+
+
+			// --- Info Section ---
+            const startY = 60;
+			
+            // Separator Line
+            doc.setDrawColor(229, 231, 235); // gray-200
+            doc.line(15, 50, 195, 50);
+
+			// Left Col (Customer)
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(107, 114, 128); // gray-500
+            doc.text('FACTURÉ À', 15, startY);
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 24, 39); // gray-900
+            doc.setFontSize(11);
+			doc.text(`${order.customerDetails.firstName} ${order.customerDetails.lastName}`, 15, startY + 6);
+			
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(75, 85, 99); // gray-600
+            doc.setFontSize(10);
+            
+			// Handle address output
+			const addressLines = doc.splitTextToSize(order.customerDetails.address || '', 100);
+			doc.text(addressLines, 15, startY + 12);
+			
+			const phoneY = startY + 12 + (addressLines.length * 5);
+			doc.text(order.customerDetails.phone || '', 15, phoneY);
+
+			if (order.email || order.customerDetails?.email) {
+				doc.text(order.email || order.customerDetails?.email || '', 15, phoneY + 5);
+			}
+
+            // (Right Col Removed)
+
+			// Items Table
+			const tableBody = order.items.map(item => {
+				let productName = 'Unknown Product';
+				let unitPrice = 0;
+
+				if (typeof item.product === 'object') {
+					productName = item.product.name;
+					unitPrice = item.product.discountPrice && item.product.discountPrice > 0 
+						? item.product.discountPrice 
+						: item.product.price || 0;
+				}
+
+				return [
+					productName,
+					item.size,
+					item.colorName || item.color || '-',
+					item.quantity,
+					`${unitPrice.toFixed(2)} DNT`,
+					`${(unitPrice * item.quantity).toFixed(2)} DNT`
+				];
+			});
+
+            const tableStartY = Math.max(phoneY + 20, startY + 40);
+
+			autoTable(doc, {
+				startY: tableStartY,
+				head: [['PRODUIT', 'TAILLE', 'COULEUR', 'QTÉ', 'PRIX', 'TOTAL']],
+				body: tableBody,
+				theme: 'plain', 
+				headStyles: { 
+                    fillColor: [243, 244, 246], // gray-100 headers
+                    textColor: [17, 24, 39], // dark text
+                    fontStyle: 'bold',
+                    fontSize: 9,
+                    halign: 'center',
+                    minCellHeight: 10
+                }, 
+				styles: { 
+                    fontSize: 9, 
+                    cellPadding: 4,
+                    valign: 'middle',
+                    halign: 'center',
+                    lineColor: [229, 231, 235], // gray-200
+                    lineWidth: { bottom: 0.1 } // bottom border only
+                },
+                columnStyles: {
+                    0: { halign: 'left' }
+                }
+			});
+
+			// Total
+			const finalY = (doc as any).lastAutoTable.finalY + 10;
+            
+            // Total Stats
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(17, 24, 39);
+            
+            // Align Total Right
+            doc.text(`TOTAL`, 160, finalY + 10, { align: 'right' });
+            doc.setFontSize(14);
+			doc.text(`${order.total.toFixed(2)} DNT`, 195, finalY + 10, { align: 'right' });
+			
+			// Footer
+            const pageHeight = doc.internal.pageSize.height;
+			
+            // Divider line for footer
+            doc.setDrawColor(229, 231, 235);
+            doc.line(20, pageHeight - 35, 190, pageHeight - 35);
+
+			doc.setFont('helvetica', 'bold');
+			doc.setFontSize(9);
+			doc.setTextColor(17, 24, 39); // dark
+			doc.text('Hana Mode', 105, pageHeight - 25, { align: 'center' });
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(107, 114, 128); // gray-500
+            
+            // Address / Contact Line
+			doc.text('13 Rue de la Kasbah, Bab Bhar, Tunis  •  +216 25 524 828', 105, pageHeight - 20, { align: 'center' });
+            doc.text('Merci de votre confiance.', 105, pageHeight - 12, { align: 'center' });
+		});
+
+		doc.save(`hanamode_facture_${new Date().toISOString().split('T')[0]}.pdf`);
 	};
 
 	if (loading) return (
@@ -317,13 +524,21 @@ const AdminOrdersPage: React.FC = () => {
 							/>
 						</div>
 
-						{/* Reset Button */}
-						<div className="w-full md:w-auto pb-0.5">
+						{/* Reset & Print Buttons */}
+						<div className="w-full md:w-auto pb-0.5 flex gap-2">
 							<button
 								onClick={resetFilters}
-								className="w-full md:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700  transition-colors text-base font-medium"
+								className="w-full md:w-auto px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors text-base font-medium rounded"
 							>
 								{t('filters.reset', 'Reset')}
+							</button>
+							<button
+								onClick={handleExportPDF}
+								disabled={filteredOrders.length === 0}
+								className="w-full md:w-auto px-4 py-2 bg-gray-900 hover:bg-black text-white transition-colors text-base font-medium rounded flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								<Printer className="w-4 h-4" />
+								<span>PDF</span>
 							</button>
 						</div>
 					</div>

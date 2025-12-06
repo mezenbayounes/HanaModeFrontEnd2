@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ContactMessage, getContactMessages } from '../api/ContactApi';
+import { ContactMessage, getContactMessages, deleteContactMessage } from '../api/contactApi';
 import AdminNavbar from '../components/AdminNavbar';
-import { Mail, Phone, Calendar, User } from 'lucide-react';
+import { Mail, Phone, Calendar, Trash2, AlertCircle } from 'lucide-react';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 export default function AdminMessagesPage() {
   const { t } = useTranslation();
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  
+  // Delete confirmation
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [messageToDelete, setMessageToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     fetchMessages();
@@ -22,6 +27,25 @@ export default function AdminMessagesPage() {
       setError('Failed to load messages');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteClick = (id: number) => {
+    setMessageToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (messageToDelete) {
+      try {
+        await deleteContactMessage(messageToDelete);
+        setMessages(prev => prev.filter(msg => msg.id !== messageToDelete));
+        setIsDeleteModalOpen(false);
+        setMessageToDelete(null);
+      } catch (err) {
+        console.error("Failed to delete message", err);
+        alert("Failed to delete message");
+      }
     }
   };
 
@@ -72,7 +96,7 @@ export default function AdminMessagesPage() {
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {messages.map((msg) => (
-              <div key={msg._id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100">
+              <div key={msg.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-100 relative group">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <div className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold">
@@ -86,15 +110,26 @@ export default function AdminMessagesPage() {
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Delete Button */}
+                  <button 
+                    onClick={() => handleDeleteClick(msg.id)}
+                    className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                    title="Delete Message"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
                 </div>
 
                 <div className="space-y-3">
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Mail className="h-4 w-4 mr-2 text-gray-400" />
-                    <a href={`mailto:${msg.email}`} className="hover:text-gray-900 truncate transition-colors">
-                      {msg.email}
-                    </a>
-                  </div>
+                  {msg.email && (
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                      <a href={`mailto:${msg.email}`} className="hover:text-gray-900 truncate transition-colors">
+                        {msg.email}
+                      </a>
+                    </div>
+                  )}
                   {msg.phone && (
                     <div className="flex items-center text-sm text-gray-600">
                       <Phone className="h-4 w-4 mr-2 text-gray-400" />
@@ -115,6 +150,17 @@ export default function AdminMessagesPage() {
           </div>
         )}
       </div>
+
+      {/* Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title={t('admin.deleteMessage', 'Delete Message')}
+        message={t('admin.confirmDeleteMessage', 'Are you sure you want to delete this message? This action cannot be undone.')}
+        confirmText={t('common.delete', 'Delete')}
+        cancelText={t('common.cancel', 'Cancel')}
+      />
     </div>
   );
 }

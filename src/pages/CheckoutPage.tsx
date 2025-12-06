@@ -53,9 +53,11 @@ export default function CheckoutPage() {
     } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phone)) {
       newErrors.phone = t('checkout.phoneInvalid');
     }
+    /* Optional Email
     if (!formData.email.trim()) {
       newErrors.email = t('checkout.emailRequired') || 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else */ 
+    if (formData.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = t('checkout.emailInvalid') || 'Invalid email address';
     }
 
@@ -213,7 +215,7 @@ export default function CheckoutPage() {
 
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('checkout.email')} *
+                  {t('checkout.email')} (Optional)
                 </label>
                 <input
                   type="email"

@@ -52,11 +52,17 @@ export default function ShopPage() {
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      if (searchTerm.trim()) {
+        const term = searchTerm.toLowerCase();
+        if (!product.name.toLowerCase().includes(term) && !product.description?.toLowerCase().includes(term)) {
+           return false;
+        }
+      }
       if (selectedCategory !== "all" && product.category !== selectedCategory) return false;
       if (showInStockOnly && !product.inStock) return false;
       return true;
     });
-  }, [products, selectedCategory, showInStockOnly]);
+  }, [products, selectedCategory, showInStockOnly, searchTerm]);
 
   const paginatedProducts = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

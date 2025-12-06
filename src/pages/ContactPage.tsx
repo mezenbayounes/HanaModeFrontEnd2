@@ -155,11 +155,10 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        {t('contact.emailAddress')} *
+                        {t('contact.emailAddress')} ({t('common.optional', 'Optional')})
                       </label>
                       <input
                         type="email"
-                        required
                         value={formData.email}
                         onChange={handleChange('email')}
                         className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-rose-500 focus:border-transparent"

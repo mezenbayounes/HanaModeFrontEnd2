@@ -6,7 +6,7 @@ const API_URL = `${BASE_URL}/api/contact`;
 
 export interface ContactPayload {
   name: string;
-  email: string;
+  email?: string;
   phone?: string;
   message: string;
 }
@@ -19,7 +19,7 @@ export const submitContactForm = async (payload: ContactPayload) => {
 export interface ContactMessage {
   id: number;
   name: string;
-  email: string;
+  email: string; // Keep as string in response, backend might send null but usually models return json
   phone?: string;
   message: string;
   createdAt: string;
@@ -27,6 +27,11 @@ export interface ContactMessage {
 
 export const getContactMessages = async () => {
   const res = await axios.get<ContactMessage[]>(API_URL);
+  return res.data;
+};
+
+export const deleteContactMessage = async (id: number) => {
+  const res = await axios.delete(`${API_URL}/${id}`);
   return res.data;
 };
 
